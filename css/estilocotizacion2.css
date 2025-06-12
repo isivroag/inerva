@@ -1,0 +1,187 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.clearfix:after {
+    content: "";
+    display: table;
+    clear: both;
+}
+
+body {
+    position: relative;
+    width: 21cm;
+    height: 27.9cm;
+    margin: 0 auto;
+    color: #555555;
+    background: #FFFFFF;
+    font-family: Arial, sans-serif;
+    font-size: 13px;
+}
+
+/* Estilos para la tabla del header (sin bordes) */
+header table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+header table, header table tr, header table td {
+    border: none !important;
+}
+
+.logo_factura img {
+    width: 180px;
+}
+
+.info_empresa {
+    text-align: center;
+}
+
+.info_empresa .empresa {
+    font-weight: bold;
+    font-size: 14px;
+}
+
+.info_factura {
+    text-align: right;
+}
+
+.info_factura .encabezado {
+    font-weight: bold;
+    font-size: 14px;
+}
+
+/* Estilos para la tabla factura_cliente */
+.factura_cliente {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 15px;
+}
+
+.factura_cliente td {
+    padding: 8px;
+    text-align: left; /* Alineación a la derecha */
+}
+
+.info_cliente .encabezado {
+    font-weight: bold;
+    font-size: 14px;
+}
+
+.info_cliente p b {
+    font-weight: bold; /* Texto en negritas para el nombre del cliente */
+}
+
+/* Estilos para la tabla factura_detalle */
+.factura_detalle {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 15px;
+}
+
+.factura_detalle thead th {
+    background-color: #153510 !important;
+    color: white !important;
+    padding: 8px;
+    text-align: center;
+    font-weight: bold;
+}
+
+.factura_detalle tbody td {
+    padding: 6px;
+    text-align: center;
+    background-color: white !important;
+    border: 1px solid #ddd;
+    font-size: 12px;
+}
+
+.factura_detalle .textright {
+    text-align: right;
+}
+
+.factura_detalle .textcenter {
+    text-align: center;
+}
+
+/* Estilos para los totales */
+.detalle_totales th {
+    padding: 8px;
+    text-align: right;
+    font-weight: bold;
+}
+
+.detalle_totales th span {
+    font-weight: bold;
+}
+
+/* Notas y pie de página */
+.nota {
+    font-size: 12px;
+    line-height: 1.4;
+    margin-bottom: 15px;
+}
+
+.label_gracias {
+    text-align: center;
+    font-size: 16px;
+    margin-top: 20px;
+    color: #153510;
+}
+
+/* Clases utilitarias */
+.round {
+    border-radius: 3px;
+    padding: 10px;
+}
+
+.textcenter {
+    text-align: center;
+}
+
+.textright {
+    text-align: right;
+}
+
+/* Estilos para la tabla factura_cliente */
+.factura_cliente {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 15px;
+}
+
+.factura_cliente .info_cliente {
+    padding: 0;
+}
+
+/* Estilos para la tabla detalle_pres */
+.detalle_pres {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+    border: 1px solid #153510;
+}
+
+.detalle_pres thead th {
+    background-color: #153510;
+    color: white;
+    padding: 8px;
+    text-align: center;
+    font-weight: bold;
+    border: 1px solid #153510;
+}
+
+.detalle_pres tbody td {
+    padding: 8px;
+    text-align: center;
+    border: 1px solid #153510;
+}
+
+.detalle_pres .textright {
+    text-align: right;
+}
+
+.detalle_pres .textcenter {
+    text-align: center;
+}

@@ -1,0 +1,111 @@
+html {
+    margin: 0 !important;
+    padding: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+    overflow: auto !important;
+    background-color: #07210c !important;
+}
+
+#titulo {
+    text-align: center !important;
+    padding: 5px !important;
+    margin: 10px !important;
+    font-size: 25px !important;
+    font-weight: bold !important;
+    color: #c39d5d !important;
+}
+
+.contenedor {
+    position: relative !important;
+    display: block !important;
+    width: 100% !important;
+    height: calc(100vh - 100px) !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    overflow: auto !important;
+}
+
+.contenedor svg {
+    width: 100% !important;
+    height: 100% !important;
+    border: none !important;
+    display: block !important; 
+    margin: 0 !important;
+    padding: 0  !important;
+}
+
+.manzana {
+   
+    cursor: pointer !important;
+pointer-events: visible !important; /* Asegurar que los path sean interactivos */
+}
+
+.manzana:hover {
+    fill: #2980b9 !important;
+}
+
+.disponible {
+    fill: #2ecc71 !important;
+    /* Verde */
+}
+
+.apartado {
+    fill: #e67e22 !important;
+    /* Naranja */
+}
+
+.vendido {
+    fill: #e74c3c !important;
+    /* Rojo */
+}
+
+.no-encontrado {
+    fill: #3498db !important;
+    /* Azul por defecto */
+    opacity: 1 !important;
+}
+
+#div_carga {
+    position: absolute !important;
+    width: 100% !important;
+    height: 100% !important;
+    background-color: rgba(60, 60, 60, 0.5) !important;
+    display: none !important;
+    justify-content: center !important;
+    align-items: center !important;
+    z-index: 3 !important;
+}
+
+#cargador {
+    position: absolute !important;
+    top: 50% !important;
+    left: 50% !important;
+    margin-top: -25px !important;
+    margin-left: -25px !important;
+}
+
+#textoc {
+    position: absolute !important;
+    top: 50% !important;
+    left: 50% !important;
+    margin-top: 120px !important;
+    margin-left: 20px !important;
+}
+
+/* Estilos para la imagen del path en el modal */
+#modalPathImage {
+    width: 400px; /* Ancho fijo */
+    height: 400px; /* Alto fijo */
+    margin: 0 auto; /* Centrar horizontalmente */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid #ccc;
+    margin-top: 10px;
+}
+
+#modalPathImage svg {
+    width: 90%; /* Escalar al 90% del contenedor */
+    height: 90%; /* Escalar al 90% del contenedor */
+}
