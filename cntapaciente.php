@@ -12,10 +12,16 @@ include_once 'bd/conexion.php';
 $objeto = new conn();
 $conexion = $objeto->connect();
 
-$consulta = "SELECT * FROM paciente WHERE edo_px=1 ORDER BY id_px";
+$consulta = "SELECT * FROM vpaciente WHERE edo_px=1 ORDER BY id_px";
 $resultado = $conexion->prepare($consulta);
 $resultado->execute();
 $data = $resultado->fetchAll(PDO::FETCH_ASSOC);
+
+
+$cntam = "SELECT * FROM wmedios WHERE estado_medio=1 ORDER BY id_medio";
+$res = $conexion->prepare($cntam);
+$res->execute();
+$datamedio = $res->fetchAll(PDO::FETCH_ASSOC);
 
 
 $message = "";
@@ -66,14 +72,17 @@ $message = "";
                     <div class="row">
                         <div class="col-lg-12">
                             <div class="table-responsive">
-                                <table name="tablaV" id="tablaV" class="table table-sm table-striped table-bordered table-condensed text-nowrap w-auto mx-auto" style="width:100%; font-size:14px">
+                                <table name="tablaV" id="tablaV" class="tablaredonda table table-sm table-striped table-bordered table-condensed text-nowrap w-auto mx-auto" style="width:100%; font-size:14px">
                                     <thead class="text-center bg-green">
                                         <tr>
                                             <th>ID</th>
                                             <th>NOMBRE</th>
                                             <th>TEL</th>
                                             <th>CORREO</th>
-                                            <th>FECHA NACIMIENTO</th>
+                                            <th>FECHA NAC</th>
+                                            <th>ID MEDIO</th>
+                                            <th>MEDIO</th>
+                                            <th>OTRO MEDIO</th>
                                             <th>ACCIONES</th>
                                         </tr>
                                     </thead>
@@ -87,6 +96,9 @@ $message = "";
                                                 <td><?php echo $dat['tel_px'] ?></td>
                                                 <td><?php echo $dat['correo_px'] ?></td>
                                                 <td><?php echo $dat['fechanac_px'] ?></td>
+                                                <td><?php echo $dat['id_medio'] ?></td>
+                                                <td><?php echo $dat['nom_medio'] ?></td>
+                                                <td><?php echo $dat['otro_medio'] ?></td>
                                                 <td></td>
                                             </tr>
                                         <?php
@@ -122,13 +134,20 @@ $message = "";
                             <div class="modal-body row">
 
                                 <input type="hidden" name="id" id="id">
-                                
-                                <div class="col-sm-12">
+
+                                <div class="col-sm-8">
                                     <div class="form-group input-group-sm">
                                         <label for="nombre" class="col-form-label">*NOMBRE :</label>
                                         <input type="text" class="form-control" name="nombre" id="nombre" autocomplete="off" placeholder="NOMBRE" require>
                                     </div>
                                 </div>
+                                <div class="col-sm-4">
+                                    <div class="form-group input-group-sm">
+                                        <label for="fechanac" class="col-form-label">*FECHA NACIMIENTO:</label>
+                                        <input type="date" class="form-control" name="fechanac" id="fechanac" autocomplete="off" placeholder="Fecha de Nacimiento" required>
+                                    </div>
+                                </div>
+
                                 <div class="col-sm-4">
                                     <div class="form-group input-group-sm">
                                         <label for="tel" class="col-form-label">TELEFONO:</label>
@@ -144,12 +163,27 @@ $message = "";
                                     </div>
                                 </div>
                                 <div class="col-sm-4">
-                                    <div class="form-group input-group-sm">
-                                        <label for="fechanac" class="col-form-label">*FECHA NACIMIENTO:</label>
-                                        <input type="date" class="form-control" name="fechanac" id="fechanac" autocomplete="off" placeholder="Fecha de Nacimiento" required>
+                                    <div class="form-group input-group-sm auto">
+                                        <label for="medio" class="col-form-label">Medio por el que nos conocio:</label>
+                                        <select class="form-control" name="medio" id="medio">
+                                            <?php foreach ($datamedio as $dtt) { ?>
+                                                <option
+                                                    id="<?php echo $dtt['id_medio'] ?>"
+                                                    value="<?php echo $dtt['id_medio'] ?>"
+                                                    data-mas-medio="<?php echo $dtt['mas_medio'] ?>">
+                                                    <?php echo $dtt['nom_medio'] ?>
+                                                </option>
+                                            <?php } ?>
+                                        </select>
                                     </div>
                                 </div>
+                                <div class="col-sm-12" id="otro_medio_div" style="display: none;">
+                                    <div class="form-group input-group-sm">
+                                        <label for="otro medio" class="col-form-label">ESPECIFICAR:</label>
+                                        <input type="text" class="form-control" name="otro_medio" id="otro_medio" autocomplete="off" placeholder="Especificar otro medio o convenio si es necesario">
+                                    </div>
 
+                                </div>
                             </div>
                     </div>
 
@@ -162,7 +196,7 @@ $message = "";
             </div>
         </div>
     </section>
- 
+
 </div>
 
 

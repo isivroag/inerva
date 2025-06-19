@@ -27,6 +27,8 @@ $message = "";
 <link rel="stylesheet" href="plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
 <link rel="stylesheet" href="plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/css/bootstrap-select.min.css">
+<link rel="stylesheet" href="plugins/bootstrap-colorpicker/css/bootstrap-colorpicker.min.css">
+
 
 <style>
     .starchecked {
@@ -66,13 +68,14 @@ $message = "";
                     <div class="row">
                         <div class="col-lg-12">
                             <div class="table-responsive">
-                                <table name="tablaV" id="tablaV" class="table table-sm table-striped table-bordered table-condensed text-nowrap w-auto mx-auto" style="width:100%; font-size:14px">
+                                <table name="tablaV" id="tablaV" class="tablaredonda table table-sm table-striped table-bordered table-condensed text-nowrap w-auto mx-auto" style="width:100%; font-size:14px">
                                     <thead class="text-center bg-green">
                                         <tr>
                                             <th>ID</th>
                                             <th>NOMBRE</th>
                                             <th>TEL</th>
                                             <th>CORREO</th>
+                                            <th>COLOR</th>
                                             <th>ACCIONES</th>
                                         </tr>
                                     </thead>
@@ -85,6 +88,10 @@ $message = "";
                                                 <td><?php echo $dat['nombre_col'] ?></td>
                                                 <td><?php echo $dat['tel_col'] ?></td>
                                                 <td><?php echo $dat['correo_col'] ?></td>
+                                                <td class="text-center">
+                                                  
+                                                        <?php echo $dat['color_col'] ?>
+                                                    </span>
                                                 <td></td>
                                             </tr>
                                         <?php
@@ -92,6 +99,7 @@ $message = "";
                                         ?>
                                     </tbody>
                                 </table>
+                               
                             </div>
                         </div>
                     </div>
@@ -120,14 +128,14 @@ $message = "";
                             <div class="modal-body row">
 
                                 <input type="hidden" name="id" id="id">
-                                
+
                                 <div class="col-sm-12">
                                     <div class="form-group input-group-sm">
                                         <label for="nombre" class="col-form-label">*NOMBRE :</label>
                                         <input type="text" class="form-control" name="nombre" id="nombre" autocomplete="off" placeholder="NOMBRE" require>
                                     </div>
                                 </div>
-                                <div class="col-sm-6">
+                                <div class="col-sm-4">
                                     <div class="form-group input-group-sm">
                                         <label for="tel" class="col-form-label">TELEFONO:</label>
                                         <input type="text" class="form-control" name="tel" id="tel" autocomplete="off" placeholder="Teléfono">
@@ -135,10 +143,24 @@ $message = "";
                                 </div>
 
 
-                                <div class="col-sm-6">
+                                <div class="col-sm-4">
                                     <div class="form-group input-group-sm">
                                         <label for="correo" class="col-form-label">*CORREO:</label>
                                         <input type="mail" class="form-control" name="correo" id="correo" autocomplete="off" placeholder="Correo">
+                                    </div>
+                                </div>
+                                <div class="col-lg-4">
+                                    <div class="input-group input-group-sm">
+                                        <label for="color" class="col-form-label">Color:</label>
+                                        <div class="input-group input-group-sm my-colorpicker2 colorpicker-element" data-colorpicker-id="2">
+                                            <input type=" text" class="form-control" name="color" id="color" placeholder="Seleccionar Color" data-original-title="" title="" autocomplete="off">
+                                            <span class=" input-group-append">
+                                                <span class="input-group-text">
+                                                    <i class="fas fa-square " style="color: rgb(65, 115, 146);"></i>
+                                                </span>
+                                            </span>
+                                        </div>
+
                                     </div>
                                 </div>
 
@@ -155,7 +177,7 @@ $message = "";
             </div>
         </div>
     </section>
- 
+
 </div>
 
 
@@ -177,3 +199,4 @@ $message = "";
 <script src="https://cdn.datatables.net/buttons/1.6.2/js/buttons.html5.min.js"></script>
 <script src="http://cdn.datatables.net/plug-ins/1.10.21/sorting/formatted-numbers.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/js/bootstrap-select.min.js"></script>
+<script src="plugins/bootstrap-colorpicker/js/bootstrap-colorpicker.min.js"></script>

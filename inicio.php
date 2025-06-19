@@ -7,6 +7,21 @@ include_once "templates/navegacion.php";
 include_once 'bd/conexion.php';
 $objeto = new conn();
 $conexion = $objeto->connect();
+date_default_timezone_set('America/Mexico_City');
+$fecha = date('Y-m-d');
+
+$sql = "SELECT id, id_px,id_col,nombre as colaborador, title as paciente, descripcion,date(start) as fecha,time(start) as hora, id_con, nom_con as consultorio,estado_citap,color,estado 
+from vcitap2 where estado_citap = '1' and estado<>'4' and date(start) = '$fecha' order by start desc";
+$stmt = $conexion->prepare($sql);
+$stmt->execute();
+$data = $stmt->fetchAll(PDO::FETCH_ASSOC);
+if (count($data) == 0) {
+  $data = [];
+}
+// Verificar si hay datos
+if (empty($data)) {
+  $data = [];
+}
 
 
 
@@ -54,7 +69,7 @@ $conexion = $objeto->connect();
           </div>
         </div>
       </div>
-      
+
       <div class="card-deck">
         <div class="card text-center">
           <div class="card-header bg-green text-white">
@@ -65,16 +80,18 @@ $conexion = $objeto->connect();
               <div class="row">
                 <div class="col-lg-12">
                   <div class="table-responsive">
-                    <table name="tablaNuevo" id="tablaNuevo" class="table table-sm table-striped table-bordered table-condensed text-nowrap w-auto mx-auto" style="width:100%; font-size:14px">
+                    <table name="tablaNuevo" id="tablaNuevo" class="tablaredonda table table-sm table-striped table-bordered table-condensed text-nowrap w-auto mx-auto" style="width:100%; font-size:14px">
                       <thead class="text-center  bg-green">
                         <tr>
                           <th>ID</th>
-                          <th>NOMBRE</th>
-                          <th>TELÉFONO</th>
-                          <th>CORREO</th>
-                          <th>ASIGNADO A</th>
-                          <th>FECHA REGISTRO</th>
-                          <th>SEGUMIENTO</th>
+                          <th>HORA</th>
+                          <th>COLOR</th>
+                          <th>PSICOLOGO</th>
+                          <th>PACIENTE</th>
+                          <th>CONSULTORIO</th>
+                          <th>DESCRIPCIÓN</th>
+                          <th>ESTADO</th>
+                          <th>ESTADO</th>
                           <th>ACCIONES</th>
 
                         </tr>
@@ -82,30 +99,15 @@ $conexion = $objeto->connect();
                       <tbody>
                         <?php foreach ($data as $dat): ?>
                           <tr>
-                            <td><?php echo $dat['id_pros'] ?></td>
-                            <td><?php echo $dat['nombre'] ?></td>
-                            <td><?php echo $dat['telefono'] ?></td>
-                            <td><?php echo $dat['correo'] ?></td>
-                            <td><?php echo $dat['nombre_col'] ?></td>
-                            <td><?php echo date('d/m/Y', strtotime($dat['fecha_registro'])) ?></td>
-
-                            <td class="text-center">
-                              <?php
-                              $badge_class = '';
-                              $estado_text = '';
-                              switch ($dat['edo_seguimiento']) {
-                                case 1:
-                                  $badge_class = 'badge-nuevo';
-                                  $estado_text = 'Nuevo';
-                                  break;
-                                case 2:
-                                  $badge_class = 'badge-seguimiento';
-                                  $estado_text = 'Seguimiento';
-                                  break;
-                              }
-                              ?>
-                              <span class="badge <?php echo $badge_class ?>"><?php echo $estado_text ?></span>
-                            </td>
+                            <td><?php echo $dat['id'] ?></td>
+                            <td><?php echo $dat['hora'] ?></td>
+                            <td><?php echo $dat['color'] ?></td>
+                            <td><?php echo $dat['colaborador'] ?></td>
+                            <td><?php echo $dat['paciente'] ?></td>
+                            <td><?php echo $dat['consultorio'] ?></td>
+                            <td><?php echo $dat['descripcion'] ?></td>
+                            <td><?php echo $dat['estado'] ?></td>
+                            <td class="text-center"></td>
                             <td></td>
 
 
@@ -122,7 +124,7 @@ $conexion = $objeto->connect();
         </div>
 
       </div>
-     
+
     </div>
   </section>
   <!-- /.content -->

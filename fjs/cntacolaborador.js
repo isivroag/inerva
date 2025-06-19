@@ -33,6 +33,13 @@ $(document).ready(function () {
       },
       sProcessing: "Procesando...",
     },
+     rowCallback: function (row, data) {
+        
+   
+            $($(row).find('td')[4]).css('background-color',data[4]);
+
+   
+           },
   });
 
   //BONTON NUEVO
@@ -57,11 +64,13 @@ $(document).ready(function () {
     nombre = fila.find("td:eq(1)").text();
     tel = fila.find("td:eq(2)").text();
     correo = fila.find("td:eq(3)").text();
+    color = fila.find("td:eq(4)").text();
 
     $("#id").val(id);
     $("#nombre").val(nombre);
     $("#tel").val(tel);
     $("#correo").val(correo);
+    $("#color").val(color);
 
     opcion = 2; //editar
 
@@ -113,6 +122,8 @@ $(document).ready(function () {
     var nombre = $("#nombre").val();
     var tel = $("#tel").val();
     var correo = $("#correo").val();
+    var color = $("#color").val();
+
 
     if (nombre.length == 0) {
       Swal.fire({
@@ -131,6 +142,7 @@ $(document).ready(function () {
           tel: tel,
           id: id,
           correo: correo,
+          color: color,
           opcion: opcion,
         },
         success: function (data) {
@@ -143,15 +155,24 @@ $(document).ready(function () {
           nombre = data[0].nombre_col;
           tel = data[0].tel_col;
           correo = data[0].correo_col;
-
+          color = data[0].color_col;
           if (opcion == 1) {
-            tablaVis.row.add([id, nombre, tel, correo]).draw();
+            tablaVis.row.add([id, nombre, tel, correo, color]).draw();
           } else {
-            tablaVis.row(fila).data([id, nombre, tel, correo]).draw();
+            tablaVis.row(fila).data([id, nombre, tel, correo, color]).draw();
           }
+
+          
         },
       });
       $("#modalCRUD").modal("hide");
     }
   });
+
+  
+    $('.my-colorpicker2').colorpicker()
+
+    $('.my-colorpicker2').on('colorpickerChange', function(event) {
+      $('.my-colorpicker2 .fa-square').css('color', event.color.toString());
+    })
 });
