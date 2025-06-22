@@ -17,6 +17,7 @@ $(document).ready(function () {
     paging: false,
     ordering: false,
     info: false,
+    searching: false,
 
     columnDefs: [
      /* {
@@ -29,7 +30,8 @@ $(document).ready(function () {
       },*/
       
       { className: 'hide_column', targets: [3] },
-      { className: 'text-center', targets: [7] },
+      { className: 'hide_column', targets: [7] },
+       { className: 'text-center', targets: [8] },
 
      
     ],
@@ -61,35 +63,53 @@ $(document).ready(function () {
       valor = parseInt(data[7]);
       var icono = "";
     
-      switch (valor) {
+       switch (valor) {
         case 0:
-            icono =
+          icono =
             '<i class="fa-solid fa-square-question text-secondary fa-2x text-center" title="Sin información"></i>';
-            $($(row).find("td")[7]).html(icono);
-            $($(row).find("td")[7]).find('i').tooltip();
+          $($(row).find("td")[8]).html(icono);
+          $($(row).find("td")[8]).find("i").tooltip();
           break;
         case 1:
           icono =
             '<i class="fa-solid fa-phone text-success fa-2x text-center" title="Cita confirmada"></i>';
-          $($(row).find("td")[7]).html(icono);
-          $($(row).find("td")[7]).find('i').tooltip();
+          $($(row).find("td")[8]).html(icono);
+          $($(row).find("td")[8]).find("i").tooltip();
           break;
         case 2:
           icono =
             '<i class="fa-solid fa-phone-slash text-warning fa-2x text-center" title="Cita no confirmada"></i>';
-            $($(row).find("td")[7]).html(icono);
-            $($(row).find("td")[7]).find('i').tooltip();
-            break;
+          $($(row).find("td")[8]).html(icono);
+          $($(row).find("td")[8]).find("i").tooltip();
+          break;
         case 4:
           icono =
             '<i class="fa-solid fa-square-xmark text-danger fa-2x text-center" title="Cita Cancelada"></i>';
-          $($(row).find("td")[7]).html(icono);
-          $($(row).find("td")[7]).find('i').tooltip();
+          $($(row).find("td")[8]).html(icono);
+          $($(row).find("td")[8]).find("i").tooltip();
+          break;
+        case 5:
+          icono =
+            '<i class="fa-solid fa-user-check text-success fa-2x text-center" title="Paciente Asistió"></i>';
+          $($(row).find("td")[8]).html(icono);
+          $($(row).find("td")[8]).find("i").tooltip();
+          break;
+        case 6:
+          icono =
+            '<i class="fa-solid fa-user-xmark text-danger fa-2x text-center" title="Paciente No Asistió"></i>';
+          $($(row).find("td")[8]).html(icono);
+          $($(row).find("td")[8]).find("i").tooltip();
+          break;
+        case 10 : // PAGADO
+          icono =
+            '<i class="fa-solid fa-money-check-alt text-success fa-2x text-center" title="Pago Realizado"></i>';
+          $($(row).find("td")[8]).html(icono);
+          $($(row).find("td")[8]).find("i").tooltip();
           break;
         default:
           icono =
             '<i class="fa-solid fa-square-xmark text-danger fa-2x text-center"></i>';
-          $($(row).find("td")[7]).html(icono);
+          $($(row).find("td")[8]).html(icono);
           break;
       }
     },
@@ -130,6 +150,7 @@ if (texto.length>0){
                 data[i].consultorio,
                 data[i].descripcion,
                 data[i].estado,
+                ""
                 
              
               ])

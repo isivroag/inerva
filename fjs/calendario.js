@@ -105,10 +105,23 @@ $(document).ready(function () {
         url: "bd/dbeventosp.php",
         method: "GET",
         extraParams: {
+          
           custom_param1: "something",
           custom_param2: "somethingelse",
         },
       },
+
+      eventRender: function(info) {
+    if (info.event.extendedProps.estado == 5 || info.event.extendedProps.estado == 10) {
+        // Crear elemento con el candado
+        const lockIcon = document.createElement('i');
+        lockIcon.className = 'fas fa-lock';
+        lockIcon.style.marginRight = '5px';
+        
+        // Insertar el icono antes del título
+        info.el.querySelector('.fc-title').prepend(lockIcon);
+    }
+},
 
       eventClick: function (calEvent) {
         var id = calEvent.event.id;
@@ -122,6 +135,15 @@ $(document).ready(function () {
           success: function (data) {
             if (data[0].tipo_p == 0) {
             } else {
+             if (data[0].estado == 5 || data[0].estado == 7 || data[0].estado == 10) {
+                Swal.fire({
+                  title: "Cita Bloqueada",
+                  text: "No es posible editar una cita bloqueada",
+                  icon: "warning",
+                });
+                return false;
+              }
+           
               $("#formDatospx :input").prop("disabled", false);
               $("#foliox").val(data[0].id);
               $("#id_px").val(data[0].id_px);

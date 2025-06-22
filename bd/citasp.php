@@ -108,7 +108,7 @@ switch ($opcion) {
                 break;
         case 4:
                 $consulta = "SELECT id,id_px,id_col,title,descripcion,tipo_p,
-                date(start) as fecha,time(start) as hora,obs,id_con,duracion
+                date(start) as fecha,time(start) as hora,obs,id_con,duracion,estado
                 FROM vcitap2 WHERE id='$id'";
                 $resultado = $conexion->prepare($consulta);
                 $resultado->execute();

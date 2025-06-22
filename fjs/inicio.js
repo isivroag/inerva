@@ -1,6 +1,7 @@
 $(document).ready(function () {
   var id, opcion;
   opcion = 4;
+  var fila;
   var textcolumnas = permisos();
 
   function permisos() {
@@ -135,11 +136,15 @@ $(document).ready(function () {
           $($(row).find("td")[8]).html(icono);
           $($(row).find("td")[8]).find("i").tooltip();
           break;
-        case 10 : // PAGADO
+        case 10: // PAGADO
           icono =
-            '<i class="fa-solid fa-money-check-alt text-success fa-2x text-center" title="Pago Realizado"></i>';
+            '<a href="#" class="verRecibo" title="Ver recibo">' +
+            '<i class="fa-solid fa-money-check-alt text-success fa-2x text-center"></i>' +
+            "</a>";
           $($(row).find("td")[8]).html(icono);
           $($(row).find("td")[8]).find("i").tooltip();
+          // Guardar el folio_cita en el enlace para usarlo después
+          $;
           break;
         default:
           icono =
@@ -164,7 +169,7 @@ $(document).ready(function () {
         title: "Operación no permitida",
         text: "La cita ya ha sido concluida. No es posible registrar asistencia.",
         icon: "warning",
-        confirmButtonText: "Aceptar"
+        confirmButtonText: "Aceptar",
       });
       return false;
     }
@@ -175,7 +180,7 @@ $(document).ready(function () {
       icon: "question",
       showCancelButton: true,
       confirmButtonText: "Sí, confirmar",
-      cancelButtonText: "Cancelar"
+      cancelButtonText: "Cancelar",
     }).then((result) => {
       if (result.value) {
         $.ajax({
@@ -190,12 +195,12 @@ $(document).ready(function () {
               text: "Se registró la visita del paciente con éxito.",
               icon: "success",
               timer: 1500,
-              showConfirmButton: false
+              showConfirmButton: false,
             });
             setTimeout(function () {
               window.location.reload();
             }, 1500);
-          }
+          },
         });
       }
     });
@@ -213,7 +218,7 @@ $(document).ready(function () {
         title: "Operación no permitida",
         text: "La cita ya ha sido concluida. No es posible registrar inasistencia.",
         icon: "warning",
-        confirmButtonText: "Aceptar"
+        confirmButtonText: "Aceptar",
       });
       return false;
     }
@@ -224,7 +229,7 @@ $(document).ready(function () {
       icon: "warning",
       showCancelButton: true,
       confirmButtonText: "Sí, confirmar",
-      cancelButtonText: "Cancelar"
+      cancelButtonText: "Cancelar",
     }).then((result) => {
       if (result.value) {
         $.ajax({
@@ -239,12 +244,12 @@ $(document).ready(function () {
               text: "Paciente no asistió a su cita.",
               icon: "error",
               timer: 1500,
-              showConfirmButton: false
+              showConfirmButton: false,
             });
             setTimeout(function () {
               window.location.reload();
             }, 1500);
-          }
+          },
         });
       }
     });
@@ -261,7 +266,7 @@ $(document).ready(function () {
         title: "Operación no permitida",
         text: "La cita ya ha sido concluida. No es posible registrar cobro.",
         icon: "warning",
-        confirmButtonText: "Aceptar"
+        confirmButtonText: "Aceptar",
       });
       return false;
     }
@@ -273,7 +278,7 @@ $(document).ready(function () {
         icon: "question",
         showCancelButton: true,
         confirmButtonText: "Sí, registrar",
-        cancelButtonText: "Cancelar"
+        cancelButtonText: "Cancelar",
       }).then((result) => {
         if (result.value) {
           window.location.href = "cobranza.php?id=" + id;
@@ -284,9 +289,29 @@ $(document).ready(function () {
         title: "Operación no permitida",
         text: "Solo es posible realizar el cobro si el paciente asistió a la cita.",
         icon: "warning",
-        confirmButtonText: "Aceptar"
+        confirmButtonText: "Aceptar",
       });
     }
   });
 
+  $(document).on("click", ".verRecibo", function () {
+    fila = $(this).closest("tr");
+    var folio_cob = 0;
+    folio_cita = parseInt(fila.find("td:eq(0)").text());
+    console.log("Folio de cita:", folio_cita);
+
+    $.ajax({
+      url: "bd/buscarrecibo.php",
+      type: "POST",
+      dataType: "json",
+      data: { folio_cita: folio_cita },
+      success: function (data) {
+        folio_cob = data;
+        window.location.href = "cobranza.php?folio_cob=" + folio_cob;
+      },
+      error: function () {
+        Swal.fire("Error", "Error de comunicación con el servidor", "error");
+      },
+    });
+  });
 });

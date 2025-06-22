@@ -129,6 +129,7 @@ if (isset($_GET['fecha'])) {
                                             <th>Consultorio</th>
                                             <th>Descripción</th>
                                             <th>Estado</th>
+                                            <th>Estado</th>
                                         </tr>
                                     </thead>
                                     <tbody>

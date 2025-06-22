@@ -17,8 +17,8 @@ $data = 0;
 switch ($opcion) {
     case 1: //buscar tipo de cita y actualizar
         $sql ="SELECT id, id_px,id_col,nombre as colaborador, title as paciente, descripcion,date(start) as fecha,time(start) as hora, id_con, nom_con as consultorio,estado_citap,color ,estado
-from vcitap2 where estado_citap = '1' and date(start) = '$fecha' order by start desc";
-        $consulta = "SELECT id, id_px,id_col,nombre as colaborador, title as paciente, descripcion,date(start) as fecha,time(start) as hora, id_con, nom_con as consultorio,estado_citap,estado,color FROM vcitap2 WHERE title like '%".$texto."%' and estado<>4 and date(start)>='$fecha' ORDER BY start ";
+        from vcitap2 where estado_citap = '1' and date(start) = '$fecha' order by start desc";
+        $consulta = "SELECT id, id_px,id_col,nombre as colaborador, title as paciente, descripcion,date(start) as fecha,time(start) as hora, id_con, nom_con as consultorio,estado_citap,estado,color FROM vcitap2 WHERE title like '%".$texto."%'  and date(start) >= '$fecha' ORDER BY start ";
         $resultado = $conexion->prepare($consulta);
         $resultado->execute();
         $data = $resultado->fetchAll(PDO::FETCH_ASSOC);
@@ -26,7 +26,7 @@ from vcitap2 where estado_citap = '1' and date(start) = '$fecha' order by start 
 
         break;
     case 2:
-        $consulta = "SELECT id, id_px,id_col,nombre as colaborador, title as paciente, descripcion,date(start) as fecha,time(start) as hora, id_con, nom_con as consultorio,estado_citap,estado,color FROM vcitap2 WHERE title like '%".$texto."%' and estado<>4 ORDER BY start ";
+        $consulta = "SELECT id, id_px,id_col,nombre as colaborador, title as paciente, descripcion,date(start) as fecha,time(start) as hora, id_con, nom_con as consultorio,estado_citap,estado,color FROM vcitap2 WHERE title like '%".$texto."%'  ORDER BY start ";
         $resultado = $conexion->prepare($consulta);
         $resultado->execute();
         $data = $resultado->fetchAll(PDO::FETCH_ASSOC);

@@ -68,6 +68,8 @@ switch ($opcion) {
             $data = $resultado->fetchAll(PDO::FETCH_ASSOC);
         }
         break;
+    case 5: 
+        break;
     case 6://CONFIRMADA
         $consulta = "SELECT * from citap where folio_citap='$id'";
         $resultado = $conexion->prepare($consulta);

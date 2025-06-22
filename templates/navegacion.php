@@ -147,8 +147,8 @@
             </li>
           <?php } ?>
 
-          <li class="nav-item  has-treeview <?php echo ($pagina == 'rptingresos') ? "menu-open" : ""; ?>">
-            <a href="#" class="nav-link  <?php echo ($pagina == 'rptingresos') ? "active" : ""; ?>">
+          <li class="nav-item  has-treeview <?php echo ($pagina == 'rptingresos' || $pagina == 'rptpacientes') ? "menu-open" : ""; ?>">
+            <a href="#" class="nav-link  <?php echo ($pagina == 'rptingresos' || $pagina == 'rptpacientes') ? "active" : ""; ?>">
               <i class="fa-sharp-duotone fa-regular fa-display-chart-up nav-icon"></i>
               <p>
                 REPORTES
@@ -163,8 +163,14 @@
 
               <li class="nav-item">
                 <a href="rptingresos.php" class="nav-link <?php echo ($pagina == 'rptingresos') ? " seleccionado" : ""; ?>  ">
-                  <i class="fa-sharp-duotone fa-regular fa-diagram-project nav-icon"></i>
+                  <i class="fa-sharp-duotone fa-regular fa-file-invoice-dollar nav-icon"></i>
                   <p>INGRESOS</p>
+                </a>
+              </li>
+               <li class="nav-item">
+                <a href="rptpacientes.php" class="nav-link <?php echo ($pagina == 'rptpacientes') ? " seleccionado" : ""; ?>  ">
+                  <i class="fa-sharp-duotone fa-regular fa-diagram-project nav-icon"></i>
+                  <p>ORIGEN PACIENTES</p>
                 </a>
               </li>
 
