@@ -42,6 +42,17 @@ $resultadocab->execute();
 $datacab = $resultadocab->fetchAll(PDO::FETCH_ASSOC);
 
 ?>
+<style>
+    .tarjetacita {
+        cursor: pointer;
+        transition: transform 0.2s;
+    }
+
+    .tarjetacita:hover {
+        transform: scale(1.05);
+        color: black;
+    }       
+</style>
 
 <link rel="stylesheet" href="plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
 <link rel="stylesheet" href="plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
@@ -66,7 +77,7 @@ $datacab = $resultadocab->fetchAll(PDO::FETCH_ASSOC);
 
         <!-- Default box -->
         <div class="card">
-            <div class="card-header bg-gradient-green text-light">
+            <div class="card-header bg-green text-light">
                 <h1 class="card-title mx-auto">Vista de Calendario</h1>
             </div>
 
@@ -75,8 +86,8 @@ $datacab = $resultadocab->fetchAll(PDO::FETCH_ASSOC);
                 <div class="row">
                     <div class="col-lg-12">
 
-                        <button id="btnNuevo" type="button" class="btn bg-gradient-info btn-ms" data-toggle="modal"><i class="fas fa-plus-square text-light"></i><span class="text-light"> Cita Prospecto</span></button>
-                        <button id="btnNuevox" type="button" class="btn bg-gradient-green btn-ms" data-toggle="modal"><i class="fas fa-plus-square text-light"></i><span class="text-light"> Cita Cliente</span></button>
+                       
+                        <button id="btnNuevox" type="button" class="btn bg-green btn-ms" data-toggle="modal"><i class="fas fa-plus-square text-light"></i><span class="text-light"> Cita Cliente</span></button>
                     </div>
                 </div>
                 <br>
@@ -103,7 +114,7 @@ $datacab = $resultadocab->fetchAll(PDO::FETCH_ASSOC);
                         <div class="col-lg-12">
                             <div class="table-responsive w-100">
                                 <table name="tablacal" id="tablacal" class="table  table-sm  table-bordered  table-hover table-condensed text-nowrap w-100 mx-auto " style="font-size:12px;vertical-align: center!important;">
-                                    <thead class="text-center bg-gradient-green">
+                                    <thead class="text-center bg-green">
                                         <tr>
                                             <th>HR/CAB</th>
                                             <?php foreach ($datacab as $rowcab) { ?>
@@ -136,9 +147,9 @@ $datacab = $resultadocab->fetchAll(PDO::FETCH_ASSOC);
                                                         $data = $resultado->fetchAll(PDO::FETCH_ASSOC);
                                                         foreach ($data as $rowcita) {
                                                             $icono = "";
-                                                            if ($rowcita['tipo_p'] == 1) {
+                                                            /*if ($rowcita['tipo_p'] == 1) {
                                                                 $icono = '<i class="fa-solid fa-star text-warning  text-center"></i>';
-                                                            }
+                                                            }*/
                                                             if ($rowcita['duracion'] == 30) {
                                                                 echo
                                                                 '<td>
@@ -236,220 +247,6 @@ $datacab = $resultadocab->fetchAll(PDO::FETCH_ASSOC);
 
 
 
-    <!-- CITAS DE PROSPECTOS-->
-
-    <section>
-        <div class="modal fade" id="modalCRUD" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-            <div class="modal-dialog modal-lg" role="document">
-                <div class="modal-content">
-                    <div class="modal-header bg-gradient-info">
-                        <h5 class="modal-title" id="exampleModalLabel">Agendar Cita Prospecto</h5>
-
-                    </div>
-                    <form id="formDatos" action="" method="POST">
-                        <div class="modal-body row">
-
-
-                            <div class="col-sm-12">
-                                <div class="form-group input-group-sm">
-                                    <input type="hidden" class="form-control" name="tipop" id="tipop" value="0">
-                                    <input type="hidden" class="form-control" name="folio" id="folio">
-                                    <input type="hidden" class="form-control" name="opcion" id="opcion">
-                                    <input type="hidden" class="form-control" name="id_pros" id="id_pros">
-                                    <label for="nombre" class="col-form-label">Prospecto:</label>
-
-                                    <div class="input-group ">
-
-                                        <input type="text" class="form-control" name="nom_pros" id="nom_pros" autocomplete="off" placeholder="Prospecto" readonly>
-                                        <span class="input-group-append">
-                                            <button id="bcliente" type="button" class="btn btn-primary "><i class="fas fa-search"></i></button>
-                                        </span>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="col-sm-12">
-                                <div class="form-group input-group-sm">
-                                    <label for="responsable" class="col-form-label">Responsable:</label>
-                                    <select class="form-control" name="responsable" id="responsable">
-                                        <?php
-                                        foreach ($datai as $dti) {
-                                        ?>
-                                            <option id="col<?php echo $dti['id_col'] ?>" value="<?php echo $dti['id_col'] ?>"> <?php echo $dti['nom_col'] ?></option>
-
-                                        <?php
-                                        }
-                                        ?>
-                                    </select>
-                                </div>
-                            </div>
-
-
-                            <div class="col-sm-12">
-                                <div class="form-group input-group-sm">
-                                    <label for="concepto" class="col-form-label">Concepto Cita</label>
-                                    <input type="text" class="form-control" name="concepto" id="concepto" autocomplete="off" placeholder="Concepto de Cita">
-                                </div>
-                            </div>
-
-                            <div class="col-sm-5">
-                                <div class="form-group input-group-sm auto">
-                                    <label for="cabina" class="col-form-label">Cabina:</label>
-                                    <select class="form-control" name="cabina" id="cabina">
-                                        <?php
-                                        foreach ($datacab as $dtcab) {
-
-                                        ?>
-                                            <option id="cab<?php echo $dtcab['id_cabina'] ?>" value="<?php echo $dtcab['id_cabina'] ?>"> <?php echo $dtcab['nom_cabina'] ?></option>
-                                        <?php
-                                        }
-                                        ?>
-                                    </select>
-                                </div>
-                            </div>
-
-
-                            <div class="col-sm-2">
-                                <div class="form-group input-group-sm auto">
-                                    <label for="duracion" class="col-form-label">Duración(min.):</label>
-                                    <select class="form-control" name="duracion" id="duracion">
-                                        <option id="t30" value="30"> 30</option>
-                                        <option id="t60" value="60"> 60</option>
-                                        <option id="t60" value="90"> 90</option>
-                                        <option id="t60" value="120"> 120</option>
-                                        <option id="t60" value="150"> 150</option>
-                                        <option id="t60" value="180"> 180</option>
-                                        <option id="t60" value="210"> 210</option>
-                                        <option id="t60" value="240"> 240</option>
-                                    </select>
-                                </div>
-                            </div>
-
-
-                            <div class="col-sm-3">
-                                <div class="form-group input-group-sm">
-                                    <label for="fechap" class="col-form-label">Fecha:</label>
-
-                                    <input type="date" id="fechap" name="fechap" class="form-control">
-
-
-                                </div>
-
-                            </div>
-                            <div class="col-sm-2">
-                                <div class="form-group input-group-sm auto">
-                                    <label for="hora" class="col-form-label">Hora:</label>
-                                    <select class="form-control" name="hora" id="hora">
-                                        <!--        <?php
-                                                    $horaI = "09:00:00";
-                                                    do {
-                                                    ?>
-                                            <option value="<?php echo $horaI ?>"><?php echo $horaI ?></option>
-                                        <?php
-                                                        $minutoAnadir = 30;
-                                                        $segundos_horaInicial = strtotime($horaI);
-                                                        $segundos_minutoAnadir = $minutoAnadir * 60;
-                                                        $horaI = date("H:i:s", $segundos_horaInicial + $segundos_minutoAnadir);
-                                                    } while ($horaI <= "19:30:00");
-                                        ?>-->
-
-                                    </select>
-                                </div>
-                            </div>
-
-
-
-
-                            <div class="col-sm-12">
-                                <div class="form-group">
-                                    <label for="obs" class="col-form-label">Observaciones:</label>
-                                    <textarea class="form-control" name="obs" id="obs" rows="3" autocomplete="off" placeholder="Observaciones"></textarea>
-                                </div>
-                            </div>
-
-
-
-
-                        </div>
-
-
-
-                        <div class="modal-footer row d-flex justify-content-between">
-
-                            <div class="col-sm-3 d-flex">
-
-                                <button type="button" id="btnCancelarcta" class="btn btn-danger btn-block"><i class="fas fa-ban"></i> Cancelar Cita</button>
-                            </div>
-                            <div class="col-sm-3 d-flex">
-                                <button type="button" id="btnreagendar" name="btnreagendar" class="btn btn-primary btn-block" value="btnreagendar"><i class="far fa-save"></i> Guardar Cita</button>
-                            </div>
-                            <div class="col-sm-3 d-flex">
-                                <button type="button" id="btnGuardar" name="btnGuardar" class="btn btn-success btn-block" value="btnGuardar"><i class="far fa-save"></i> Guardar Cita</button>
-                            </div>
-
-
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <section>
-        <div class="container">
-
-            <!-- Default box -->
-            <div class="modal fade" id="modalProspecto" tabindex="-7" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                <div class="modal-dialog modal-xl " role="document">
-                    <div class="modal-content w-auto">
-                        <div class="modal-header bg-gradient-info">
-                            <h5 class="modal-title" id="exampleModalLabel">BUSCAR PROSPECTO</h5>
-
-                        </div>
-                        <br>
-                        <div class="table-hover table-responsive w-auto" style="padding:15px">
-                            <table name="tablaC" id="tablaC" class="table  table-sm table-striped table-bordered table-condensed" style="width:100%">
-                                <thead class="text-center bg-gradient-info">
-                                    <tr>
-                                        <th>Id</th>
-                                        <th>Nombre</th>
-                                        <th>Telefono</th>
-                                        <th>Celular</th>
-                                        <th>Acciones</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <?php
-                                    foreach ($datac as $datc) {
-                                    ?>
-                                        <tr>
-                                            <td><?php echo $datc['id_pros'] ?></td>
-                                            <td><?php echo $datc['nom_pros'] ?></td>
-                                            <td><?php echo $datc['tel_pros'] ?></td>
-                                            <td><?php echo $datc['cel_pros'] ?></td>
-
-                                            <td></td>
-                                        </tr>
-                                    <?php
-                                    }
-                                    ?>
-                                </tbody>
-                            </table>
-                        </div>
-
-
-                    </div>
-
-                </div>
-                <!-- /.card-body -->
-
-                <!-- /.card-footer-->
-            </div>
-            <!-- /.card -->
-
-        </div>
-    </section>
-
 
     <!-- CITA DE PACIENTES -->
 
@@ -457,7 +254,7 @@ $datacab = $resultadocab->fetchAll(PDO::FETCH_ASSOC);
         <div class="modal fade" id="modalpx" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-lg" role="document">
                 <div class="modal-content">
-                    <div class="modal-header bg-gradient-green">
+                    <div class="modal-header bg-green">
                         <h5 class="modal-title" id="exampleModalLabel">Agendar Cita Cliente</h5>
 
                     </div>
@@ -490,7 +287,7 @@ $datacab = $resultadocab->fetchAll(PDO::FETCH_ASSOC);
                                         <?php
                                         foreach ($datai as $dti) {
                                         ?>
-                                            <option id="<?php echo $dti['id_col'] ?>" value="<?php echo $dti['id_col'] ?>"> <?php echo $dti['nom_col'] ?></option>
+                                            <option id="<?php echo $dti['id_col'] ?>" value="<?php echo $dti['id_col'] ?>"> <?php echo $dti['nombre_col'] ?></option>
 
                                         <?php
                                         }
@@ -509,13 +306,13 @@ $datacab = $resultadocab->fetchAll(PDO::FETCH_ASSOC);
 
                             <div class="col-sm-5">
                                 <div class="form-group input-group-sm auto">
-                                    <label for="cabinax" class="col-form-label">Cabina:</label>
+                                    <label for="cabinax" class="col-form-label">Consultorio:</label>
                                     <select class="form-control" name="cabinax" id="cabinax">
                                         <?php
                                         foreach ($datacab as $dtcab) {
 
                                         ?>
-                                            <option id="cab<?php echo $dtcab['id_cabina'] ?>" value="<?php echo $dtcab['id_cabina'] ?>"> <?php echo $dtcab['nom_cabina'] ?></option>
+                                            <option id="cab<?php echo $dtcab['id_con'] ?>" value="<?php echo $dtcab['id_con'] ?>"> <?php echo $dtcab['nombre_con'] ?></option>
                                         <?php
                                         }
                                         ?>
@@ -606,90 +403,91 @@ $datacab = $resultadocab->fetchAll(PDO::FETCH_ASSOC);
         </div>
     </section>
 
-    <section>
-        <div class="container">
+   <section>
+    <div class="container">
 
+      <!-- Default box -->
+      <div class="modal fade" id="modalProspectox" tabindex="-3" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-xl " role="document">
+          <div class="modal-content w-auto">
+            <div class="modal-header bg-green">
+              <h5 class="modal-title" id="exampleModalLabel">BUSCAR PACIENTE</h5>
 
-            <div class="modal fade" id="modalProspectox" tabindex="-3" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                <div class="modal-dialog modal-xl " role="document">
-                    <div class="modal-content w-auto">
-                        <div class="modal-header bg-gradient-green">
-                            <h5 class="modal-title" id="exampleModalLabel">BUSCAR CLIENTE</h5>
+            </div>
+            <br>
+            <div class="table-hover table-responsive w-auto" style="padding:15px">
+              <table name="tablaCx" id="tablaCx" class=" tablaredonda table  table-sm table-striped table-bordered table-condensed" style="width:100%">
+                <thead class="text-center bg-green">
+                  <tr>
+                    <th>Id</th>
+                    <th>Nombre</th>
+                    <th>Telefono</th>
+                    <th>Correo</th>
+                    <th>Acciones</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <?php
+                  foreach ($datacx as $datcx) {
+                  ?>
+                    <tr>
+                      <td><?php echo $datcx['id_px'] ?></td>
+                      <td><?php echo $datcx['nombre_px'] ?></td>
+                      <td><?php echo $datcx['tel_px'] ?></td>
+                      <td><?php echo $datcx['correo_px'] ?></td>
 
-                        </div>
-                        <br>
-                        <div class="table-hover table-responsive w-auto" style="padding:15px">
-                            <table name="tablaCx" id="tablaCx" class="table  table-sm table-striped table-bordered table-condensed" style="width:100%">
-                                <thead class="text-center bg-gradient-green">
-                                    <tr>
-                                        <th>Id</th>
-                                        <th>Nombre</th>
-                                        <th>Telefono</th>
-                                        <th>Celular</th>
-                                        <th>Acciones</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <?php
-                                    foreach ($datacx as $datcx) {
-                                    ?>
-                                        <tr>
-                                            <td><?php echo $datcx['id_clie'] ?></td>
-                                            <td><?php echo $datcx['nom_clie'] ?></td>
-                                            <td><?php echo $datcx['tel_clie'] ?></td>
-                                            <td><?php echo $datcx['ws_clie'] ?></td>
-
-                                            <td></td>
-                                        </tr>
-                                    <?php
-                                    }
-                                    ?>
-                                </tbody>
-                            </table>
-                        </div>
-
-
-                    </div>
-
-                </div>
-
+                      <td></td>
+                    </tr>
+                  <?php
+                  }
+                  ?>
+                </tbody>
+              </table>
             </div>
 
 
+          </div>
+
         </div>
-    </section>
+        <!-- /.card-body -->
 
-    <section>
-        <div class="modal fade" id="modalcan" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-            <div class="modal-dialog " role="document">
-                <div class="modal-content">
-                    <div class="modal-header bg-gradient-danger">
-                        <h5 class="modal-title" id="exampleModalLabel">CANCELAR REGISTRO</h5>
-                    </div>
-                    <div class="card card-widget" style="margin: 10px;">
-                        <form id="formcan" action="" method="POST">
-                            <div class="modal-body row">
-                                <div class="col-sm-12">
-                                    <div class="form-group input-group-sm">
-                                        <label for="motivo" class="col-form-label">Motivo de Cancelacioón:</label>
-                                        <textarea rows="3" class="form-control" name="motivo" id="motivo" placeholder="Motivo de Cancelación"></textarea>
-                                        <input type="hidden" id="fechac" name="fechac" value="<?php echo $fecha ?>">
-                                        <input type="hidden" id="foliocan" name="foliocan" value="">
-                                    </div>
-                                </div>
-                            </div>
-                    </div>
+        <!-- /.card-footer-->
+      </div>
+      <!-- /.card -->
 
+    </div>
+  </section>
 
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fas fa-ban"></i> Cancelar</button>
-                        <button type="button" id="btnGuardarc" name="btnGuardarc" class="btn btn-success" value="btnGuardarc"><i class="far fa-save"></i> Guardar</button>
-                    </div>
-                    </form>
+  <section>
+    <div class="modal fade" id="modalcan" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog " role="document">
+        <div class="modal-content">
+          <div class="modal-header bg-gradient-danger">
+            <h5 class="modal-title" id="exampleModalLabel">CANCELAR REGISTRO</h5>
+          </div>
+          <div class="card card-widget" style="margin: 10px;">
+            <form id="formcan" action="" method="POST">
+              <div class="modal-body row">
+                <div class="col-sm-12">
+                  <div class="form-group input-group-sm">
+                    <label for="motivo" class="col-form-label">Motivo de Cancelacioón:</label>
+                    <textarea rows="3" class="form-control" name="motivo" id="motivo" placeholder="Motivo de Cancelación"></textarea>
+                    <input type="hidden" id="fechac" name="fechac" value="<?php echo $fecha ?>">
+                    <input type="hidden" id="foliocan" name="foliocan" value="">
+                  </div>
                 </div>
-            </div>
+              </div>
+          </div>
+         
+          <div class="modal-footer">
+            <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fas fa-ban"></i> Cancelar</button>
+            <button type="button" id="btnGuardarc" name="btnGuardarc" class="btn btn-primary" value="btnGuardarc"><i class="far fa-save"></i> Guardar</button>
+          </div>
+          </form>
         </div>
-    </section>
+      </div>
+    </div>
+  </section>
 
 
 

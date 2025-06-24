@@ -35,7 +35,7 @@
           <a href="inicio.php" class="nav-link <?php echo ($pagina == 'home') ? "active" : ""; ?> ">
             <i class="nav-icon fa-sharp-duotone fa-regular fa-house "></i>
             <p>
-              Home
+              HOME
             </p>
           </a>
         </li>
@@ -96,9 +96,9 @@
 
           <?php if ($_SESSION['s_rol'] == '2' || $_SESSION['s_rol'] == '3' || $_SESSION['s_rol'] == '4') { ?>
             <li class="nav-item  has-treeview <?php echo ($pagina == 'calendario' || $pagina == 'buscador' || $pagina == 'confirmacion' ||
-                                                $pagina === 'cobranza' || $pagina == "cntapagoordenes" || $pagina == "reportepagos") ? "menu-open" : ""; ?>">
+                                                $pagina === 'cobranza' || $pagina == "vcalendario" || $pagina == "reportepagos") ? "menu-open" : ""; ?>">
               <a href="#" class="nav-link  <?php echo ($pagina == 'calendario' || $pagina == 'buscador' || $pagina == 'confirmacion' ||
-                                              $pagina === 'cobranza' || $pagina == "cntapagocxpgral" || $pagina == "reportepagos") ? "active" : ""; ?>">
+                                              $pagina === 'cobranza' || $pagina == "vcalendario" || $pagina == "reportepagos") ? "active" : ""; ?>">
                 <i class="fa-sharp-duotone fa-regular fa-briefcase-blank  nav-icon"></i>
                 <p>
                   OPERACIONES
@@ -125,6 +125,12 @@
                     <p>BUSCADOR</p>
                   </a>
                 </li>
+                   <li class="nav-item">
+              <a href="vcalendario.php" class="nav-link <?php echo ($pagina == 'vcalendario') ? "active seleccionado" : ""; ?>  ">
+                <i class="fa-solid fa-calendar-days  nav-icon"></i>
+                <p>CALENDARIO DIARIO</p>
+              </a>
+            </li>
                 <li class="nav-item">
                   <a href="confirmacion.php" class="nav-link <?php echo ($pagina == 'confirmacion') ? " seleccionado" : ""; ?>  ">
                     <i class="fa-sharp-duotone fa-regular fa-phone nav-icon"></i>

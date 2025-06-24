@@ -155,7 +155,10 @@ $(document).ready(function () {
       
       // Manejo de clic en fecha
       dateClick: function(info) {
-        window.location.href = 'vcalendario.php?fecha=' + info.dateStr
+        console.log(info.dateStr)
+        var soloFecha = info.dateStr.split('T')[0];
+console.log(soloFecha)
+       // window.location.href = 'vcalendario.php?fecha=' + soloFecha
       }
     })
 

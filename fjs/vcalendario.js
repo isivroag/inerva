@@ -47,7 +47,7 @@ $(document).ready(function () {
         if (data[0].tipo_p == 0) {
           $('#formDatos :input').prop('disabled', false)
           $('#folio').val(data[0].id)
-          $('#id_pros').val(data[0].id_pros)
+          $('#id_pros').val(data[0].id)
           $('#nom_pros').val(data[0].title)
           $('#concepto').val(data[0].descripcion)
           $('#responsable').val(data[0].id_per)
@@ -89,15 +89,15 @@ $(document).ready(function () {
         } else {
           $('#formDatospx :input').prop('disabled', false)
           $('#foliox').val(data[0].id)
-          $('#id_prosx').val(data[0].id_pros)
+          $('#id_prosx').val(data[0].id_px)
           $('#nom_prosx').val(data[0].title)
           $('#conceptox').val(data[0].descripcion)
-          $('#responsablex').val(data[0].id_per)
+          $('#responsablex').val(data[0].id_col)
           $('#fechax').val(data[0].fecha)
           $('#opcionx').val('1')
           $('#obsx').val(data[0].obs)
           $('#duracionx').val(data[0].duracion)
-          $('#cabinax').val(data[0].id_cabina)
+          $('#cabinax').val(data[0].id_con)
           $('#btnCancelarctax').show()
 
           rol = $('#tipousuario').val()
@@ -492,7 +492,7 @@ $(document).ready(function () {
   })
 
   $(document).on('click', '#btnGuardarx', function () {
-    var id_pros = $.trim($('#id_prosx').val())
+    var id_px = $.trim($('#id_prosx').val())
     var nombre = $.trim($('#nom_prosx').val())
     var concepto = $.trim($('#conceptox').val())
     var fecha = $.trim($('#fechax').val())
@@ -524,7 +524,7 @@ $(document).ready(function () {
         cita,
     )
     if (
-      id_pros.length == 0 ||
+      id_px.length == 0 ||
       fecha.length == 0 ||
       hora.length == 0 ||
       responsable.length == 0 ||
@@ -557,7 +557,7 @@ $(document).ready(function () {
               dataType: 'json',
               data: {
                 nombre: nombre,
-                id_pros: id_pros,
+                id_px: id_px,
                 fecha: fecha,
                 obs: obs,
                 tipop: tipop,
@@ -604,7 +604,7 @@ $(document).ready(function () {
   })
 
   $(document).on('click', '#btnreagendarx', function () {
-    var id_pros = $('#id_prosx').val()
+    var id_px = $('#id_prosx').val()
     var nombre = $('#nom_prosx').val()
     var concepto = $('#conceptox').val()
 
@@ -629,24 +629,10 @@ $(document).ready(function () {
       cita = 0
     }
 
-    console.log(
-      inicio +
-        '/ ' +
-        duracion +
-        '/ ' +
-        colaborador +
-        '/ ' +
-        cabina +
-        '/ ' +
-        cita +
-        '/ ' +
-        id +
-        '/ ' +
-        id_pros,
-    )
+  
 
     if (
-      id_pros.length == 0 ||
+      id_px.length == 0 ||
       fecha.length == 0 ||
       responsable.length == 0 ||
       cabina.length == 0
@@ -679,7 +665,7 @@ $(document).ready(function () {
               async: 'false',
               data: {
                 nombre: nombre,
-                id_pros: id_pros,
+                id_px: id_px,
                 fecha: fecha,
                 obs: obs,
                 tipop: tipop,
