@@ -131,13 +131,7 @@ $message = "";
     cursor: pointer;
   }
 
-  .fc-event-container {
-    width: 100%;
-    height: 100%;
-    overflow: visible !important;
-    display: flex;
-    flex-direction: column;
-  }
+
   .fc-time-grid-event .fc-content{
     height: 100px !important;
   }
@@ -180,6 +174,11 @@ $message = "";
    
     
   }
+  .fc-dayGridMonth-view .fc-event {
+  font-size: 0.8em;
+  margin: 1px;
+  padding: 0 2px;
+}
 </style>
 
 <!-- Content Wrapper. Contains page content -->

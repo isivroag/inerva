@@ -1,4 +1,5 @@
 <?php
+date_default_timezone_set('America/Mexico_City');
 header('Content-Type: application/json');
 include_once 'conexion.php';
 $objeto = new conn();

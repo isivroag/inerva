@@ -9,7 +9,7 @@
         
         <strong>Copyright &copy; <?php echo date('Y')?> <a href="">INERVA Terapia Cognitivo Conductual</a>.</strong> Todos los Derechos Reservados.
         <div class="float-right d-none d-sm-block">
-            <b>V.</b> 1.2 Beta
+            <b>V.</b> 1.2.1 Beta
         </div>
     </footer>
 

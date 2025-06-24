@@ -77,7 +77,8 @@ switch ($opcion) {
                                         break;
                                 }
                         } else {
-                                $consulta = "SELECT * FROM citap where (id_px='$id_px' and fecha='$fecha') and estado<> 3 and estado <> 4 and folio_citap<>'$id'";
+                                $consulta = "SELECT id,id_px,id_col,title,descripcion,tipo_p,
+                date(start) as fecha,time(start) as hora,obs,id_con,duracion,estado FROM citap where (id_px='$id_px' and fecha='$fecha') and estado<> 3 and estado <> 4 and folio_citap<>'$id'";
                                 $resultado = $conexion->prepare($consulta);
                                 $resultado->execute();
                                 if ($resultado->rowCount() == 0) {

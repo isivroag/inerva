@@ -44,8 +44,14 @@ $(document).ready(function () {
     var calendarEl = document.getElementById("calendar");
 
     calendar = new Calendar(calendarEl, {
-      defaultView: "timeGridWeek",
+      //defaultView: "timeGridWeek",
       plugins: ["bootstrap", "interaction", "dayGrid", "timeGrid"],
+
+      header: {
+        left: "prev,next today,myCustomButton",
+        center: "title",
+        right: "dayGridMonth,timeGridWeek,timeGridDay",
+      },
       customButtons: {
         myCustomButton: {
           text: "Nueva Cita",
@@ -64,11 +70,7 @@ $(document).ready(function () {
           },
         },
       },
-      header: {
-        left: "prev,next today,myCustomButton",
-        center: "title",
-        right: "dayGridMonth,timeGridWeek,timeGridDay",
-      },
+      
       views: {
         timeGrid: {
           allDaySlot: false,
@@ -79,23 +81,25 @@ $(document).ready(function () {
             hour: "2-digit",
             minute: "2-digit",
             hour12: false,
-            
           },
           slotMinTime: "08:00:00", //Hora mínima
           slotMaxTime: "20:00:00", //Hora máxima
           slotEventOverlap: false,
           scrollTime: "08:00:00", //Hora de inicio del scroll
-        
+
           headerLabelFormat: {
             weekday: "short",
           },
         },
+          dayGridMonth: {
+    dayMaxEventRows: 35, // Muestra hasta 35 eventos por día (ajustable)
+    moreLinkClick: 'popover', // O 'week' para expandir
+  },
       },
-
 
       height: "100%",
 
-      timeZone: "local",
+      timeZone: 'America/Mexico_City',
       themeSystem: "bootstrap",
       locale: "es",
       cache: false,
@@ -105,23 +109,26 @@ $(document).ready(function () {
         url: "bd/dbeventosp.php",
         method: "GET",
         extraParams: {
-          
+          timezone: 'America/Mexico_City', // Enviar zona horaria al backend
           custom_param1: "something",
           custom_param2: "somethingelse",
         },
       },
 
-      eventRender: function(info) {
-    if (info.event.extendedProps.estado == 5 || info.event.extendedProps.estado == 10) {
-        // Crear elemento con el candado
-        const lockIcon = document.createElement('i');
-        lockIcon.className = 'fas fa-lock';
-        lockIcon.style.marginRight = '5px';
-        
-        // Insertar el icono antes del título
-        info.el.querySelector('.fc-title').prepend(lockIcon);
-    }
-},
+      eventRender: function (info) {
+        if (
+          info.event.extendedProps.estado == 5 ||
+          info.event.extendedProps.estado == 10
+        ) {
+          // Crear elemento con el candado
+          const lockIcon = document.createElement("i");
+          lockIcon.className = "fas fa-lock";
+          lockIcon.style.marginRight = "5px";
+
+          // Insertar el icono antes del título
+          info.el.querySelector(".fc-title").prepend(lockIcon);
+        }
+      },
 
       eventClick: function (calEvent) {
         var id = calEvent.event.id;
@@ -135,7 +142,11 @@ $(document).ready(function () {
           success: function (data) {
             if (data[0].tipo_p == 0) {
             } else {
-             if (data[0].estado == 5 || data[0].estado == 7 || data[0].estado == 10) {
+              if (
+                data[0].estado == 5 ||
+                data[0].estado == 7 ||
+                data[0].estado == 10
+              ) {
                 Swal.fire({
                   title: "Cita Bloqueada",
                   text: "No es posible editar una cita bloqueada",
@@ -143,7 +154,7 @@ $(document).ready(function () {
                 });
                 return false;
               }
-           
+
               $("#formDatospx :input").prop("disabled", false);
               $("#foliox").val(data[0].id);
               $("#id_px").val(data[0].id_px);
@@ -171,13 +182,7 @@ $(document).ready(function () {
               }
 
               cargarhorasx();
-              /* $('#horax').append(
-                $('<option>', {
-                  value: data[0].hora,
-                  text: data[0].hora,
-                  disabled: true,
-                }),
-              )*/
+
               $("#horax").val(data[0].hora);
 
               $("#modalpx").modal("show");
@@ -186,10 +191,10 @@ $(document).ready(function () {
         });
       },
       dateClick: function (info) {
-           console.log(info.dateStr)
-        var soloFecha = info.dateStr.split('T')[0];
+        console.log(info.dateStr);
+        var soloFecha = info.dateStr.split("T")[0];
 
-       // window.location.href = 'vcalendario.php?fecha=' + soloFecha
+        // window.location.href = 'vcalendario.php?fecha=' + soloFecha
         window.location.href = "vcalendario.php?fecha=" + soloFecha;
       },
 
@@ -682,8 +687,6 @@ $(document).ready(function () {
       });
       return false;
     } else {
-     
-     
       $.ajax({
         type: "POST",
         url: "bd/validarcita.php",
