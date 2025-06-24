@@ -94,7 +94,7 @@
 
           <!-- CIERRA MENU CATALOGOS -->
 
-          <?php if ($_SESSION['s_rol'] == '2' || $_SESSION['s_rol'] == '3' || $_SESSION['s_rol'] == '4') { ?>
+          <?php if ($_SESSION['s_rol'] == '1' || $_SESSION['s_rol'] == '2' || $_SESSION['s_rol'] == '3') { ?>
             <li class="nav-item  has-treeview <?php echo ($pagina == 'calendario' || $pagina == 'buscador' || $pagina == 'confirmacion' ||
                                                 $pagina === 'cobranza' || $pagina == "vcalendario" || $pagina == "reportepagos") ? "menu-open" : ""; ?>">
               <a href="#" class="nav-link  <?php echo ($pagina == 'calendario' || $pagina == 'buscador' || $pagina == 'confirmacion' ||
@@ -255,26 +255,18 @@
           <li class="nav-item">
             <a href="cntausuarios.php" class="nav-link <?php echo ($pagina == 'usuarios') ? "active" : ""; ?> ">
               <i class="fas fa-user-shield"></i>
-              <p>Usuarios</p>
+              <p>USUARIOS</p>
             </a>
           </li>
         <?php } ?>
 
-        <?php if ($_SESSION['s_rol'] == '5') { ?>
-          <hr class="sidebar-divider">
-          <li class="nav-item">
-            <a href="capprospecto.php" class="nav-link <?php echo ($pagina == 'prospecto') ? "seleccionado" : ""; ?>  ">
-              <i class=" fa-duotone fa-regular fa-users-viewfinder nav-icon"></i>
-              <p>Prospectos</p>
-            </a>
-          </li>
-        <?php } ?>
+    
 
         <hr class="sidebar-divider">
         <li class="nav-item">
           <a class="nav-link" href="bd/logout.php">
             <i class="fas fa-fw fa-sign-out-alt"></i>
-            <p>Salir</p>
+            <p>SALIR</p>
           </a>
         </li>
 

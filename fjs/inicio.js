@@ -11,7 +11,21 @@ $(document).ready(function () {
 
     switch (tipousuario) {
       case 1: // usuario normal
-        columnas = "";
+        columnas =
+          "<div class='btn-group'>\
+          <button class='btn btn-sm bg-success btnAsistencia' data-toggle='tooltip' title='PX Asistio'>\
+              <i class='fa-duotone fa-solid fa-check'></i>\
+            </button>\
+            <button class='btn btn-sm btn-danger text-light btnNoasistio' data-toggle='tooltip' title='PX No Asistio'>\
+              <i class=' fa-duotone fa-solid fa-xmark'></i>\
+            </button>\
+          <button class='btn btn-sm bg-green btnAgenda' data-toggle='tooltip' title='Agenda'>\
+              <i class='fa-duotone fa-solid fa-calendar'></i>\
+            </button>\
+            <button class='btn btn-sm bg-primary btnCobro' data-toggle='tooltip' title='Cobranza'>\
+              <i class='fa-duotone fa-solid fa-dollar-sign'></i>\
+            </button>\
+          </div>";
         break;
       case 2: // usuario administrador
       case 3: // usuario supervisor
@@ -32,27 +46,7 @@ $(document).ready(function () {
           </div>";
 
         break;
-      case 4: // usuario colaborador
-        columnas =
-          "<div class='btn-group'>\
-          <button class='btn btn-sm bg-green btnAsistencia' data-toggle='tooltip' title='PX Asistio'>\
-              <i class='fa-duotone fa-solid fa-check'></i>\
-            </button>\
-            <button class='btn btn-sm bg-error btnNoasistio' data-toggle='tooltip' title='PX No Asistio'>\
-              <i class='fa-duotone fa-solid fa-xmark'></i>\
-            </button>\
-          <button class='btn btn-sm bg-green btnAgenda' data-toggle='tooltip' title='Agenda'>\
-              <i class='fa-duotone fa-solid fa-calendar'></i>\
-            </button>\
-            <button class='btn btn-sm bg-primary btnCobro' data-toggle='tooltip' title='Cobranza'>\
-              <i class='fa-duotone fa-solid fa-dollar-sign'></i>\
-            </button>\
-          </div>";
 
-        break;
-      case 5: // usuario capturista
-        columnas = "";
-        break;
       default:
         columnas = "";
 
