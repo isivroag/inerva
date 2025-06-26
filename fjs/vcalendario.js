@@ -591,7 +591,7 @@ $(document).ready(function () {
           } else {
             swal.fire({
               title: 'No es posible Agendar Cita',
-              text: 'Verifique la fecha, la hora, la cabina o el responsable',
+              text: 'Verifique la fecha, la hora, el consultorio o el responsable',
               icon: 'error',
               focusConfirm: true,
               confirmButtonText: 'Aceptar',
@@ -836,10 +836,11 @@ $(document).ready(function () {
   })
 
   function cargarhoras() {
-    fecha = $('#fechap').val()
-    colaborador = $('#responsable').val()
-    cabina = $('#cabina').val()
-    opchr = $('#opcion').val()
+    console.log('cargarhoras');
+    fecha = $('#fechap').val();
+    colaborador = $('#responsable').val();
+    cabina = $('#cabina').val();
+    opchr = $('#opcion').val();
     if (opchr == '1') {
       cita = $('#folio').val()
     } else {
@@ -889,10 +890,14 @@ $(document).ready(function () {
   })
 
   function cargarhorasx() {
+    console.clear();
+    console.log('cargarhorasx');
     fecha = $('#fechax').val()
     colaborador = $('#responsablex').val()
     cabina = $('#cabinax').val()
     opchr = $('#opcionx').val()
+    console.log("fecha: " + fecha + ' colaborador: ' + colaborador + ' consultorio: ' + cabina + ' cita: ' + opchr);
+    console.log($('#foliox').val());
     if (opchr == '1') {
       cita = $('#foliox').val()
     } else {
@@ -913,6 +918,7 @@ $(document).ready(function () {
       },
       success: function (res) {
         for (var i = 0; i < res.length; i++) {
+          console.log(res[i].nhora);
           $('#horax').append(
             $('<option>', {
               value: res[i].nhora,

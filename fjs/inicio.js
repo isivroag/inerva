@@ -22,10 +22,10 @@ $(document).ready(function () {
           <button class='btn btn-sm bg-green btnAgenda' data-toggle='tooltip' title='Agenda'>\
               <i class='fa-duotone fa-solid fa-calendar'></i>\
             </button>\
-            <button class='btn btn-sm bg-primary btnCobro' data-toggle='tooltip' title='Cobranza'>\
-              <i class='fa-duotone fa-solid fa-dollar-sign'></i>\
-            </button>\
           </div>";
+          /* <button class='btn btn-sm bg-primary btnCobro' data-toggle='tooltip' title='Cobranza'>\
+              <i class='fa-duotone fa-solid fa-dollar-sign'></i>\
+            </button>\*/
         break;
       case 2: // usuario administrador
       case 3: // usuario supervisor
@@ -40,10 +40,10 @@ $(document).ready(function () {
           <button class='btn btn-sm bg-green btnAgenda' data-toggle='tooltip' title='Agenda'>\
               <i class='fa-duotone fa-solid fa-calendar'></i>\
             </button>\
-            <button class='btn btn-sm bg-primary btnCobro' data-toggle='tooltip' title='Cobranza'>\
-              <i class='fa-duotone fa-solid fa-dollar-sign'></i>\
-            </button>\
           </div>";
+          /* <button class='btn btn-sm bg-primary btnCobro' data-toggle='tooltip' title='Cobranza'>\
+              <i class='fa-duotone fa-solid fa-dollar-sign'></i>\
+            </button>\*/
 
         break;
 

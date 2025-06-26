@@ -19,7 +19,7 @@
         <input type="hidden" id="iduser" name="iduser" value="<?php echo $_SESSION['s_id_usuario']; ?>">
         <input type="hidden" id="nameuser" name="nameuser" value="<?php echo $_SESSION['s_nombre']; ?>">
         <input type="hidden" id="tipousuario" name="tipousuario" value="<?php echo $_SESSION['s_rol']; ?>">
-      
+
         <input type="hidden" id="fechasys" name="fechasys" value="<?php echo date('Y-m-d') ?>">
       </div>
     </div>
@@ -54,7 +54,7 @@
             </a>
 
 
-            <ul class="nav nav-treeview text-white" >
+            <ul class="nav nav-treeview text-white">
 
 
 
@@ -64,29 +64,29 @@
                   <p>PACIENTES</p>
                 </a>
               </li>
-            
-                <li class="nav-item">
-                  <a href="cntacolaborador.php" class="nav-link <?php echo ($pagina == 'colaborador') ? "seleccionado" : ""; ?>  ">
-                    <i class=" fa-duotone fa-regular fa-hospital-user nav-icon"></i>
-                    <p>COLABORADORES</p>
-                  </a>
-                </li>
-                <li class="nav-item">
-                  <a href="cntaconsultorio.php" class="nav-link <?php echo ($pagina == 'consultorio') ? "seleccionado" : ""; ?>  ">
-                    <i class=" fa-duotone fa-regular fa-couch nav-icon"></i>
-                    <p>CONSULTORIOS</p>
-                  </a>
-                </li>
-           <li class="nav-item">
-                  <a href="cntaservicio.php" class="nav-link <?php echo ($pagina == 'servicios') ? "seleccionado" : ""; ?>  ">
-                    <i class=" fa-duotone fa-regular fa-heartbeat nav-icon"></i>
-                    <p>SERVICIOS</p>
-                  </a>
-                </li>
+
+              <li class="nav-item">
+                <a href="cntacolaborador.php" class="nav-link <?php echo ($pagina == 'colaborador') ? "seleccionado" : ""; ?>  ">
+                  <i class=" fa-duotone fa-regular fa-hospital-user nav-icon"></i>
+                  <p>COLABORADORES</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="cntaconsultorio.php" class="nav-link <?php echo ($pagina == 'consultorio') ? "seleccionado" : ""; ?>  ">
+                  <i class=" fa-duotone fa-regular fa-couch nav-icon"></i>
+                  <p>CONSULTORIOS</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="cntaservicio.php" class="nav-link <?php echo ($pagina == 'servicios') ? "seleccionado" : ""; ?>  ">
+                  <i class=" fa-duotone fa-regular fa-heartbeat nav-icon"></i>
+                  <p>SERVICIOS</p>
+                </a>
+              </li>
 
 
 
-                
+
 
             </ul>
 
@@ -125,12 +125,12 @@
                     <p>BUSCADOR</p>
                   </a>
                 </li>
-                   <li class="nav-item">
-              <a href="vcalendario.php" class="nav-link <?php echo ($pagina == 'vcalendario') ? "active seleccionado" : ""; ?>  ">
-                <i class="fa-solid fa-calendar-days  nav-icon"></i>
-                <p>CALENDARIO DIARIO</p>
-              </a>
-            </li>
+                <li class="nav-item">
+                  <a href="vcalendario.php" class="nav-link <?php echo ($pagina == 'vcalendario') ? "active seleccionado" : ""; ?>  ">
+                    <i class="fa-solid fa-calendar-days  nav-icon"></i>
+                    <p>CALENDARIO DIARIO</p>
+                  </a>
+                </li>
                 <li class="nav-item">
                   <a href="confirmacion.php" class="nav-link <?php echo ($pagina == 'confirmacion') ? " seleccionado" : ""; ?>  ">
                     <i class="fa-sharp-duotone fa-regular fa-phone nav-icon"></i>
@@ -139,14 +139,14 @@
                 </li>
 
 
-               
-                  <li class="nav-item">
-                    <a href="cobranza.php" class="nav-link <?php echo ($pagina == 'cobranza') ? " seleccionado" : ""; ?>  ">
-                      <i class="fa-sharp-duotone fa-regular fa-memo nav-icon"></i>
-                      <p>COBRANZA</p>
-                    </a>
-                  </li>
-             
+<!--
+                <li class="nav-item">
+                  <a href="cobranza.php" class="nav-link <?php echo ($pagina == 'cobranza') ? " seleccionado" : ""; ?>  ">
+                    <i class="fa-sharp-duotone fa-regular fa-memo nav-icon"></i>
+                    <p>COBRANZA</p>
+                  </a>
+                </li>
+          -->
 
               </ul>
 
@@ -166,14 +166,15 @@
             <ul class="nav nav-treeview">
 
 
-
+<!--
               <li class="nav-item">
                 <a href="rptingresos.php" class="nav-link <?php echo ($pagina == 'rptingresos') ? " seleccionado" : ""; ?>  ">
                   <i class="fa-sharp-duotone fa-regular fa-file-invoice-dollar nav-icon"></i>
                   <p>INGRESOS</p>
                 </a>
               </li>
-               <li class="nav-item">
+              -->
+              <li class="nav-item">
                 <a href="rptpacientes.php" class="nav-link <?php echo ($pagina == 'rptpacientes') ? " seleccionado" : ""; ?>  ">
                   <i class="fa-sharp-duotone fa-regular fa-diagram-project nav-icon"></i>
                   <p>ORIGEN PACIENTES</p>
@@ -260,7 +261,7 @@
           </li>
         <?php } ?>
 
-    
+
 
         <hr class="sidebar-divider">
         <li class="nav-item">

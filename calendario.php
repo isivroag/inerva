@@ -333,14 +333,9 @@ $message = "";
                 <div class="form-group input-group-sm auto">
                   <label for="duracionx" class="col-form-label">Duración(min.):</label>
                   <select class="form-control" name="duracionx" id="duracionx">
-                    <option id="t30x" value="30"> 30</option>
+                   
                     <option id="t60x" value="60"> 60</option>
-                    <option id="t90x" value="90"> 90</option>
-                    <option id="t120x" value="120"> 120</option>
-                    <option id="t150x" value="150"> 150</option>
-                    <option id="t180x" value="180"> 180</option>
-                    <option id="t210x" value="210"> 210</option>
-                    <option id="t240x" value="240"> 240</option>
+                    
                   </select>
                 </div>
               </div>
