@@ -151,7 +151,7 @@ $message = "";
                                 <div class="col-sm-4">
                                     <div class="form-group input-group-sm">
                                         <label for="tel" class="col-form-label">TELEFONO:</label>
-                                        <input type="text" class="form-control" name="tel" id="tel" autocomplete="off" placeholder="Teléfono" required>
+                                        <input type="text" class="form-control" name="tel" id="tel" autocomplete="off" placeholder="Teléfono" required maxlength="10" minlength="10" pattern="\d{10}">
                                     </div>
                                 </div>
 

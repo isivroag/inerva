@@ -96,9 +96,9 @@
 
           <?php if ($_SESSION['s_rol'] == '1' || $_SESSION['s_rol'] == '2' || $_SESSION['s_rol'] == '3') { ?>
             <li class="nav-item  has-treeview <?php echo ($pagina == 'calendario' || $pagina == 'buscador' || $pagina == 'confirmacion' ||
-                                                $pagina === 'cobranza' || $pagina == "vcalendario" || $pagina == "reportepagos") ? "menu-open" : ""; ?>">
+                                                $pagina === 'cobranza' || $pagina == "vcalendario" || $pagina == "cntacxc") ? "menu-open" : ""; ?>">
               <a href="#" class="nav-link  <?php echo ($pagina == 'calendario' || $pagina == 'buscador' || $pagina == 'confirmacion' ||
-                                              $pagina === 'cobranza' || $pagina == "vcalendario" || $pagina == "reportepagos") ? "active" : ""; ?>">
+                                              $pagina === 'cobranza' || $pagina == "vcalendario" || $pagina == "cntacxc") ? "active" : ""; ?>">
                 <i class="fa-sharp-duotone fa-regular fa-briefcase-blank  nav-icon"></i>
                 <p>
                   OPERACIONES
@@ -139,14 +139,21 @@
                 </li>
 
 
-<!--
+
                 <li class="nav-item">
                   <a href="cobranza.php" class="nav-link <?php echo ($pagina == 'cobranza') ? " seleccionado" : ""; ?>  ">
-                    <i class="fa-sharp-duotone fa-regular fa-memo nav-icon"></i>
-                    <p>COBRANZA</p>
+                    <i class="fa-sharp-duotone fa-regular fa-money-bill-wave nav-icon"></i>
+                    <p>COBRO</p>
                   </a>
                 </li>
-          -->
+
+                <li class="nav-item">
+                  <a href="cntacxc.php" class="nav-link <?php echo ($pagina == 'cntacxc') ? " seleccionado" : ""; ?>  ">
+                    <i class="fa-sharp-duotone fa-regular fa-file-invoice-dollar nav-icon"></i>
+                    <p>CNTACXC</p>
+                  </a>
+                </li>
+        
 
               </ul>
 
@@ -166,14 +173,14 @@
             <ul class="nav nav-treeview">
 
 
-<!--
+
               <li class="nav-item">
                 <a href="rptingresos.php" class="nav-link <?php echo ($pagina == 'rptingresos') ? " seleccionado" : ""; ?>  ">
-                  <i class="fa-sharp-duotone fa-regular fa-file-invoice-dollar nav-icon"></i>
+                  <i class="fa-sharp-duotone fa-regular fa-money-bill-alt nav-icon"></i>
                   <p>INGRESOS</p>
                 </a>
               </li>
-              -->
+             
               <li class="nav-item">
                 <a href="rptpacientes.php" class="nav-link <?php echo ($pagina == 'rptpacientes') ? " seleccionado" : ""; ?>  ">
                   <i class="fa-sharp-duotone fa-regular fa-diagram-project nav-icon"></i>

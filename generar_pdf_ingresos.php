@@ -10,9 +10,9 @@ $fecha_fin = $_GET['fecha_fin'] ?? date('Y-m-d');
 $objeto = new conn();
 $conexion = $objeto->connect();
 
-$sql = "SELECT folio_cob, fecha_cob, id_cita, fecha_cita, hora_cita, paciente, colaborador, total, metodo 
-        FROM vcobro 
-        WHERE DATE(fecha_cob) BETWEEN :fecha_inicio AND :fecha_fin
+$sql = "SELECT id_pago, fecha_pago, id_cita, fecha_cita, hora_cita, paciente, colaborador, importe, metodo 
+        FROM vpago 
+        WHERE DATE(fecha_pago) BETWEEN :fecha_inicio AND :fecha_fin
         ORDER BY metodo, fecha_cita, hora_cita";
 $stmt = $conexion->prepare($sql);
 $stmt->bindParam(':fecha_inicio', $fecha_inicio);
@@ -31,7 +31,7 @@ foreach ($data as $row) {
         ];
     }
     $ingresos[$m]['registros'][] = $row;
-    $ingresos[$m]['subtotal'] += $row['total'];
+    $ingresos[$m]['subtotal'] += $row['importe'];
 }
 $total_general = array_sum(array_column($ingresos, 'subtotal'));
 
@@ -87,14 +87,14 @@ foreach ($orden_metodos as $metodo) {
 
         foreach ($grupo['registros'] as $reg) {
             $html .= "<tr>
-            <td align='center'>{$reg['folio_cob']}</td>
-            <td align='center'>{$reg['fecha_cob']}</td>
+            <td align='center'>{$reg['id_pago']}</td>
+            <td align='center'>{$reg['fecha_pago']}</td>
             <td align='center'>{$reg['id_cita']}</td>
             <td align='center'>{$reg['fecha_cita']}</td>
             <td align='center'>{$reg['hora_cita']}</td>
             <td>{$reg['paciente']}</td>
             <td>{$reg['colaborador']}</td>
-            <td align='right'>$" . number_format($reg['total'], 2) . "</td>
+            <td align='right'>$" . number_format($reg['importe'], 2) . "</td>
         </tr>";
         }
 

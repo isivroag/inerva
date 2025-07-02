@@ -1,4 +1,45 @@
 $(document).ready(function () {
+var id, opcion;
+opcion = 4;
+
+
+  
+  tablaPagos = $("#tablaPagos").DataTable({
+    searching: false,
+      info: false,
+      paging: false,
+    
+     
+    columnDefs: [
+      
+
+      {
+        targets: -1,
+        data: null,
+        defaultContent:
+          "<div class='text-center'><button class='btn btn-sm btn-primary btnImprimir' data-toggle='tooltip' data-placement='top' title='Imprimir'><i class='fas fa-print'></i></button>\
+              <button class='btn btn-sm btn-danger btnBorrar' data-toggle='tooltip' data-placement='top' title='Eliminar'><i class='fas fa-trash-alt'></i></button></div>",
+      },
+    ],
+    language: {
+      lengthMenu: "Mostrar _MENU_ registros",
+      zeroRecords: "No se encontraron resultados",
+      info: "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
+      infoEmpty: "Mostrando registros del 0 al 0 de un total de 0 registros",
+      infoFiltered: "(filtrado de un total de _MAX_ registros)",
+      sSearch: "Buscar:",
+      oPaginate: {
+        sFirst: "Primero",
+        sLast: "Último",
+        sNext: "Siguiente",
+        sPrevious: "Anterior",
+      },
+      sProcessing: "Procesando...",
+    },
+  });
+
+
+
   const form = document.getElementById("formDatos");
   if (form.getAttribute("data-disabled") === "true") {
     const elements = form.elements;
@@ -46,7 +87,7 @@ $(document).ready(function () {
     var costo = $("#costo").val();
     var descuento = $("#descuento").val();
     var total = $("#total").val();
-    var metodo = $("#metodo_pago").val();
+
 
     // Validar campos obligatorios
     if (!id_serv || !costo || !total || !id_cita || !id_px) {
@@ -59,7 +100,7 @@ $(document).ready(function () {
     }
 
     $.ajax({
-      url: "bd/crudcobranza.php",
+      url: "bd/crudcxc.php",
       type: "POST",
       dataType: "json",
       data: {
@@ -71,15 +112,14 @@ $(document).ready(function () {
         costo: costo,
         descuento: descuento,
         total: total,
-        metodo_pago: metodo,
+       
       },
       success: function (respuesta) {
         if (respuesta.status === "ok") {
-          Swal.fire("Éxito", "Cobranza guardada correctamente", "success").then(
+          Swal.fire("Éxito", "Cuenta por cobrar creada correctamente", "success").then(
             () => {
-              $("#formDatos :input").prop("disabled", true);
-              $("#btnRecibo, #btnHome").show();
-              window.location.href = "inicio.php";
+           
+              window.location.href = "cobranza.php?id=" + id_cita;
             }
           );
         } else {
@@ -95,6 +135,95 @@ $(document).ready(function () {
       },
     });
   });
+
+  $(document).on('click', '#btnPagar', function() {
+    var folio = $('#folio_cob').val();
+    var saldo = $('#saldo').val();
+    // Puedes hacer un AJAX para traer el saldo actual si lo deseas
+    $("#folio_cxc_pago").val(folio);
+    $("#saldo_ini").val(saldo);
+    $("#saldo_fin").val(saldo); // Inicialmente el saldo final es igual al saldo inicial
+    // Aquí podrías traer el saldo real desde backend si hay pagos previos
+    
+    $("#modalPago").modal("show");
+});
+
+
+$("#importe_pago").on("input", function () {
+  var saldoIni = parseFloat($("#saldo_ini").val()) || 0;
+  var importe = parseFloat($(this).val()) || 0;
+  if (importe > saldoIni) {
+    $(this).val(saldoIni);
+    importe = saldoIni;
+    Swal.fire("Advertencia", "El importe no puede ser mayor al saldo pendiente.", "warning");
+  }
+  var saldoFin = saldoIni - importe;
+  saldoFin = saldoFin < 0 ? 0 : saldoFin;
+  $("#saldo_fin").val(saldoFin.toFixed(2));
+});
+
+
+
+// Guardar pago
+$("#formPago").submit(function(e){
+    e.preventDefault();
+    // Validar campos obligatorios
+    $saldoini= parseFloat($("#saldo_ini").val());
+    $importe = parseFloat($("#importe_pago").val());
+    if ($importe> $saldoini) {
+        Swal.fire("Error", "El importe no puede ser mayor al saldo pendiente.", "error  ");
+        return;
+    }
+
+    var datos = {
+        folio_cxc: $("#folio_cxc_pago").val(),
+        fecha_pago: $("#fecha_pago").val(),
+        importe_pago: $("#importe_pago").val(),
+        metodo_pago: $("#metodo_pago_real").val()
+    };
+    $.ajax({
+        url: "bd/crudpago.php",
+        type: "POST",
+        dataType: "json",
+        data: datos,
+        success: function(respuesta) {
+            if(respuesta.status === "ok") {
+                Swal.fire({
+                  title: "Éxito",
+                  text: "Pago registrado correctamente",
+                  icon: "success",
+                  timer: 1500,
+                  timerProgressBar: true,
+                  showConfirmButton: false
+                }).then(() => {
+                  window.location.reload();
+                });
+               
+            } else {
+                Swal.fire("Error", respuesta.mensaje || "No se pudo registrar el pago", "error");
+            }
+        },
+        error: function() {
+            Swal.fire("Error", "Error de comunicación con el servidor", "error");
+        }
+    });
+});
+
+
+$(document).on('click', '#btnVerPagos', function() {
+    var folio = $(this).data('folio');
+    $("#modalVerPagos").modal("show");
+    /*
+    $.ajax({
+        url: "bd/getpagos.php",
+        type: "POST",
+        data: {folio_cxc: folio},
+        success: function(html) {
+            $("#pagosBody").html(html);
+            
+        }
+    });*/
+});
 
   tablaCita = $("#tablaCita").DataTable({
     /* columnDefs: [
@@ -141,12 +270,16 @@ $(document).ready(function () {
     window.location.href = "cobranza.php?id=" + id;
     // Cerrar el modal de citas
   });
-  $("#btnImprimir").click(function () {
-    var folio_cob = $("#folio_cob").val();
-    if (!folio_cob) {
+
+  $(".btnImprimir").click(function () {
+    var fila = $(this).closest("tr");
+    var id_pago = fila.find("td:eq(0)").text(); // Asumiendo
+
+
+    if (!id_pago) {
       Swal.fire(
         "Error",
-        "Por favor, selecciona una cobranza primero.",
+        "Por favor, selecciona un pago primero.",
         "error"
       );
       return;
@@ -175,10 +308,10 @@ $(document).ready(function () {
     }).then((result) => {
       if (result.value) {  // Esto es equivalente a result.isConfirmed
         // Opción Personalizado (per=1)
-        window.open(`generar_recibo.php?folio_cob=${folio_cob}&per=1`, '_blank');
+        window.open(`generar_ticket.php?id_pago=${id_pago}&per=1`, '_blank');
     } else if (result.dismiss === Swal.DismissReason.cancel) {
         // Opción Público General
-        window.open(`generar_recibo.php?folio_cob=${folio_cob}`, '_blank');
+        window.open(`generar_ticket.php?id_pago=${id_pago}`, '_blank');
     }
     });
   });

@@ -8,9 +8,9 @@ $conexion = $objeto->connect();
 $fecha_inicio = $_GET['fecha_inicio'] ?? date('Y-m-d');
 $fecha_fin = $_GET['fecha_fin'] ?? date('Y-m-d');
 
-$sql = "SELECT folio_cob, fecha_cob, id_cita, fecha_cita, hora_cita, paciente, colaborador, total, metodo 
-        FROM vcobro 
-        WHERE DATE(fecha_cob) BETWEEN :fecha_inicio AND :fecha_fin
+$sql = "SELECT id_pago, fecha_pago, id_cita, fecha_cita, hora_cita, paciente, colaborador, importe, metodo 
+        FROM vpago 
+        WHERE DATE(fecha_pago) BETWEEN :fecha_inicio AND :fecha_fin
         ORDER BY metodo, fecha_cita, hora_cita";
 $stmt = $conexion->prepare($sql);
 $stmt->bindParam(':fecha_inicio', $fecha_inicio);
@@ -28,7 +28,7 @@ foreach ($data as $row) {
         ];
     }
     $ingresos[$m]['registros'][] = $row;
-    $ingresos[$m]['subtotal'] += $row['total'];
+    $ingresos[$m]['subtotal'] += $row['importe'];
 }
 $total_general = array_sum(array_column($ingresos, 'subtotal'));
 
@@ -97,14 +97,14 @@ if (file_exists($logoPath)) {
         <tbody>
             <?php foreach ($grupo['registros'] as $row): ?>
             <tr>
-                <td style="text-align:center;"><?php echo $row['folio_cob']; ?></td>
-                <td style="text-align:center;"><?php echo $row['fecha_cob']; ?></td>
+                <td style="text-align:center;"><?php echo $row['id_pago']; ?></td>
+                <td style="text-align:center;"><?php echo $row['fecha_pago']; ?></td>
                 <td style="text-align:center;"><?php echo $row['id_cita']; ?></td>
                 <td style="text-align:center;"><?php echo $row['fecha_cita']; ?></td>
                 <td style="text-align:center;"><?php echo $row['hora_cita']; ?></td>
                 <td><?php echo htmlspecialchars($row['paciente']); ?></td>
                 <td><?php echo htmlspecialchars($row['colaborador']); ?></td>
-                <td style="text-align:right;">$<?php echo number_format($row['total'], 2); ?></td>
+                <td style="text-align:right;">$<?php echo number_format($row['importe'], 2); ?></td>
             </tr>
             <?php endforeach; ?>
             <tr class="subtotal-row" style="background-color: #<?php echo $colorFondo; ?>;">

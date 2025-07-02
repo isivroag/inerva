@@ -21,16 +21,18 @@ $costo = "";
 $descuento = 0;
 $total = 0;
 $metodo_pago = "";
+$saldo = 0;
 
 
 if (isset($_GET['folio_cob'])) {
     $folio_cob = $_GET['folio_cob'];
-    $consulta = "SELECT * FROM vcobro WHERE folio_cob=:folio_cob";
+    $consulta = "SELECT * FROM vcxc WHERE folio_cxc=:folio_cob";
     $resultado = $conexion->prepare($consulta);
     $resultado->bindParam(':folio_cob', $folio_cob, PDO::PARAM_STR);
     $resultado->execute();
     $cobranza = $resultado->fetch(PDO::FETCH_ASSOC);
-    $folio_cob = $cobranza['folio_cob'] ?? '';
+
+    $folio_cob = $cobranza['folio_cxc'] ?? '';
     $folio_cita = $cobranza['id_cita'] ?? '';
     $id_col = $cobranza['id_col'] ?? '';
     $colaborador = $cobranza['colaborador'] ?? '';
@@ -42,29 +44,57 @@ if (isset($_GET['folio_cob'])) {
     $descuento = $cobranza['descuento'] ?? 0;
     $total = $cobranza['total'] ?? 0;
     $metodo_pago = $cobranza['metodo'] ?? '';
+    $saldo = $cobranza['saldo'] ?? 0;
 } else {
     $cobranza = null;
 }
 
 if (isset($_GET['id'])) {
     $id = $_GET['id'];
-    $consulta = "SELECT id, id_px,id_col,nombre as colaborador, title as paciente, 
+
+    // Verificar si ya existe una CXC para esta cita
+    $consultaCXC = "SELECT * FROM vcxc WHERE id_cita=:id and edo_cxc=1";
+    $resultadoCXC = $conexion->prepare($consultaCXC);
+    $resultadoCXC->bindParam(':id', $id, PDO::PARAM_INT);
+    $resultadoCXC->execute();
+    $cxcExistente = $resultadoCXC->fetch(PDO::FETCH_ASSOC);
+
+    if ($cxcExistente) {
+        // Si ya existe, mostrar mensaje y deshabilitar todo
+        $cxcYaExiste = true;
+
+        $folio_cob = $cxcExistente['folio_cxc'];
+        $folio_cita = $cxcExistente['id_cita'];
+        $saldo = $cxcExistente['saldo'];
+        $id_col = $cxcExistente['id_col'];
+        $colaborador = $cxcExistente['colaborador'];
+        $id_px = $cxcExistente['id_px'];
+        $paciente = $cxcExistente['paciente'];
+        $fecha = $cxcExistente['fecha_cob'];
+        $id_serv = $cxcExistente['id_serv'];
+        $costo = $cxcExistente['costo'];
+        $descuento = $cxcExistente['descuento'];
+        $total = $cxcExistente['total'];
+    } else {
+        $cxcYaExiste = false;
+        $consulta = "SELECT id, id_px,id_col,nombre as colaborador, title as paciente, 
     descripcion,date(start) as fecha,time(start) as hora, id_con, nom_con as consultorio,
     estado_citap,color,estado FROM vcitap2 WHERE id=:id";
-    $resultado = $conexion->prepare($consulta);
-    $resultado->bindParam(':id', $id, PDO::PARAM_INT);
-    $resultado->execute();
-    $cita = $resultado->fetch(PDO::FETCH_ASSOC);
-    $folio_cita = $id;
-    $id_col = $cita['id_col'];
-    $colaborador = $cita['colaborador'];
-    $id_px = $cita['id_px'];
-    $paciente = $cita['paciente'];
-    $costo = 0;
-    $descuento = 0;
-    $total = 0;
-    $metodo_pago = "";
+        $resultado = $conexion->prepare($consulta);
+        $resultado->bindParam(':id', $id, PDO::PARAM_INT);
+        $resultado->execute();
+        $cita = $resultado->fetch(PDO::FETCH_ASSOC);
+        $folio_cita = $id;
+        $id_col = $cita['id_col'];
+        $colaborador = $cita['colaborador'];
+        $id_px = $cita['id_px'];
+        $paciente = $cita['paciente'];
+        $costo = 0;
+        $descuento = 0;
+        $total = 0;
+    }
 } else {
+    $cxcYaExiste = false;
     $cita = null;
     $consulta = "SELECT id, id_px,id_col,nombre as colaborador, title as paciente, 
     descripcion,date(start) as fecha,time(start) as hora, id_con, nom_con as consultorio,
@@ -125,12 +155,16 @@ $servicios = $resultado->fetchAll(PDO::FETCH_ASSOC);
                             <?php if ($folio_cob == 0) { ?>
                                 <button type="button" id="btnGuardar" class="btn btn-primary">Guardar</button>
                             <?php } else { ?>
-                                <button type="button" id="btnImprimir" class="btn btn-secondary" style="<?php if ($folio_cob == 0) echo 'display: none;'; ?>">Imprimir</button>
-                                <button type="button" id="btnHome" class="btn btn-info" style="<?php if ($folio_cob == 0) echo 'display: none;'; ?>">Home</button>
+
+                                <button type="button" class="btn btn-info" id="btnVerPagos" data-folio="<?php echo $folio_cob; ?>">Ver Pagos</button>
+                                <button type="button" class="btn btn-success" id="btnPagar" data-folio="<?php echo $folio_cob; ?>">Registrar Pago</button>
+
+                                <!-- <button type="button" id="btnImprimir" class="btn btn-secondary" style="<?php if ($folio_cob == 0) echo 'display: none;'; ?>">Imprimir</button>
+                                <button type="button" id="btnHome" class="btn btn-info" style="<?php if ($folio_cob == 0) echo 'display: none;'; ?>">Home</button>-->
                             <?php } ?>
                         </div>
                     </div>
-                    <form id="formDatos" action="" method="POST" <?php if($folio_cob != 0) echo 'data-disabled="true"'; ?>>
+                    <form id="formDatos" action="" method="POST" <?php if ($folio_cob != 0 || $cxcYaExiste) echo 'data-disabled="true"'; ?>>
 
                         <div class="row justify-content-center">
                             <div class="col-sm-1">
@@ -172,7 +206,7 @@ $servicios = $resultado->fetchAll(PDO::FETCH_ASSOC);
                                 </div>
                             </div>
 
-                            <div class="col-sm-1">
+                            <div class="col-sm-2">
                                 <div class="form-group input-group-sm">
                                     <label for="fecha" class="col-form-label">*FECHA :</label>
                                     <input type="date" class="form-control" name="fecha" id="fecha" value="<?php echo $fecha; ?>" required>
@@ -184,7 +218,7 @@ $servicios = $resultado->fetchAll(PDO::FETCH_ASSOC);
                         </div>
 
                         <div class=" row justify-content-center">
-                            <div class="col-sm-7">
+                            <div class="col-sm-8">
                                 <div class="form-group input-group-sm">
 
                                     <input type="hidden" name="id_paciente" id="id_paciente" value="<?php echo $id_px; ?>">
@@ -195,7 +229,7 @@ $servicios = $resultado->fetchAll(PDO::FETCH_ASSOC);
                         </div>
 
                         <div class="row justify-content-center">
-                            <div class="col-7">
+                            <div class="col-8">
                                 <div class="form-group input-group-sm">
                                     <label for="id_serv" class="col-form-label form-control-sm">SERVICIO:</label>
                                     <select class="form-control form-control-sm selectpicker selectinerva" name="id_serv" id="id_serv" data-live-search="true" title="SELECCIONA SERVICIO" required>
@@ -206,7 +240,7 @@ $servicios = $resultado->fetchAll(PDO::FETCH_ASSOC);
                                                 <?php echo $servicio['nom_serv'] ?> - $<?php echo number_format($servicio['costo_serv'], 2) ?>
                                             </option>
                                         <?php endforeach; ?>
-                                       
+
                                     </select>
                                 </div>
                             </div>
@@ -219,7 +253,7 @@ $servicios = $resultado->fetchAll(PDO::FETCH_ASSOC);
                                     <input type="number" step="0.01" class="form-control text-right" name="costo" id="costo" value="<?php echo $costo; ?>" readonly>
                                 </div>
                             </div>
-                            <div class="col-sm-1">
+                            <div class="col-sm-2">
                                 <div class="form-group input-group-sm">
                                     <label for="descuento" class="col-form-label">DESCUENTO :</label>
                                     <input type="number" step="0.01" class="form-control text-right" name="descuento" id="descuento" value="<?php echo $descuento; ?>" placeholder="0.00">
@@ -233,14 +267,8 @@ $servicios = $resultado->fetchAll(PDO::FETCH_ASSOC);
                             </div>
                             <div class="col-sm-2">
                                 <div class="form-group input-group-sm">
-                                    <label for="metodo_pago" class="col-form-label">*MÉTODO PAGO :</label>
-                                    <select class="form-control form-control-sm selectpicker selectinerva" name="metodo_pago" id="metodo_pago" data-live-search="true" title="SELECCIONA MÉTODO PAGO" required>
-                                        <option value="Efectivo" <?php if ($metodo_pago == "Efectivo") echo "selected"; ?>>Efectivo</option>
-                                        <option value="Tarjeta Crédito" <?php if ($metodo_pago == "Tarjeta Crédito") echo "selected"; ?>>Tarjeta Crédito</option>
-                                        <option value="Tarjeta Débito" <?php if ($metodo_pago == "Tarjeta Débito") echo "selected"; ?>>Tarjeta Débito</option>
-                                        <option value="Transferencia" <?php if ($metodo_pago == "Transferencia") echo "selected"; ?>>Transferencia</option>
-                                        <option value="Cortesía" <?php if ($metodo_pago == "Cortesía") echo "selected"; ?>>Cortesía</option>
-                                    </select>
+                                    <label for="saldo" class="col-form-label">SALDO :</label>
+                                    <input type="number" step="0.01" class="form-control text-right" name="saldo" id="saldo" value="<?php echo $saldo; ?>" readonly>
                                 </div>
                             </div>
 
@@ -314,7 +342,122 @@ $servicios = $resultado->fetchAll(PDO::FETCH_ASSOC);
 
         </div>
     </section>
+    <section>
+        <div class="modal fade" id="modalPago" tabindex="-1" role="dialog" aria-labelledby="modalPagoLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <form id="formPago">
+                    <div class="modal-content">
+                        <div class="modal-header bg-green text-white">
+                            <h5 class="modal-title" id="modalPagoLabel">Registrar Pago</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <input type="hidden" id="folio_cxc_pago" name="folio_cxc">
+                            <div class="form-group form-group-sm">
+                                <label for="fecha_pago">Fecha de Pago:</label>
+                                <input type="date" class="form-control form-control-sm" id="fecha_pago" name="fecha_pago" value="<?php echo date('Y-m-d'); ?>" required>
+                            </div>
+                            <div class="form-group form-group-sm">
+                                <label for="saldo_ini">Saldo Inicial:</label>
+                                <input type="text" class="form-control form-control-sm" id="saldo_ini" name="saldo_ini" readonly>
+                            </div>
+                            <div class="form-group form-group-sm">
+                                <label for="importe_pago">Importe:</label>
+                                <input type="number" step="0.01" class="form-control form-control-sm" id="importe_pago" name="importe_pago" required>
+                            </div>
+                            <div class="form-group form-group-sm">
+                                <label for="saldo_fin">Saldo Final:</label>
+                                <input type="text" class="form-control form-control-sm" id="saldo_fin" name="saldo_fin" readonly>
+                            </div>
+                            <div class="form-group form-group-sm">
+                                <label for="metodo_pago_real">Método de Pago:</label>
+                                <select class="form-control form-control-sm" id="metodo_pago_real" name="metodo_pago_real" required>
+                                    <option value="Efectivo">Efectivo</option>
+                                    <option value="Tarjeta Crédito">Tarjeta Crédito</option>
+                                    <option value="Tarjeta Débito">Tarjeta Débito</option>
+                                    <option value="Transferencia">Transferencia</option>
+                                    <option value="Cortesía">Cortesía</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="submit" class="btn btn-success">Registrar Pago</button>
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
+    <!-- Modal Registrar Pago -->
 
+    <section>
+        <!-- Modal Ver Pagos -->
+        <div class="modal fade" id="modalVerPagos" tabindex="-1" role="dialog" aria-labelledby="modalVerPagosLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg" role="document">
+                <div class="modal-content">
+                    <div class="modal-header bg-green text-white">
+                        <h5 class="modal-title" id="modalVerPagosLabel">Pagos Realizados</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body" id="pagosBody">
+                        <div class="row justify-content-center">
+
+                            <div class="col-sm-12">
+                                <?php
+                                if (isset($folio_cob) && $folio_cob != 0) {
+                                    // Consulta los pagos realizados para este folio de cobranza
+                                    $consultaPagos = "SELECT id_pago,fecha_pago, importe, metodo, saldoini, saldofin FROM pago WHERE folio_cxc = :folio_cxc ORDER BY id_pago,fecha_pago ASC";
+                                    $stmtPagos = $conexion->prepare($consultaPagos);
+                                    $stmtPagos->bindParam(':folio_cxc', $folio_cob, PDO::PARAM_STR);
+                                    $stmtPagos->execute();
+                                    $pagos = $stmtPagos->fetchAll(PDO::FETCH_ASSOC);
+
+                                    if ($pagos && count($pagos) > 0) {
+                                        echo '<div class="table-responsive">';
+                                        echo '<table id="tablaPagos" class="table table-bordered table-sm table-striped mx-auto tabla-condensed tablaredonda" style="width:100% !important; font-size:14px">';
+                                        echo '<thead class="bg-green text-white"><tr>
+                                        <th>Folio Pago</th>
+                                        <th>Fecha</th>
+                                        <th>Método</th>
+                                        <th>Saldo Inicial</th>
+                                        <th>Importe</th>
+                                        <th>Saldo Final</th>
+                                        <th>Acciones</th>
+                                        </tr></thead><tbody>';
+                                        foreach ($pagos as $pago) {
+                                            echo '<tr>';
+                                            echo '<td>' . htmlspecialchars($pago['id_pago']) . '</td>';
+                                            echo '<td>' . htmlspecialchars($pago['fecha_pago']) . '</td>';
+                                           
+                                            echo '<td>' . htmlspecialchars($pago['metodo']) . '</td>';
+                                            echo '<td class="text-right">$' . number_format($pago['saldoini'], 2) . '</td>';
+                                             echo '<td class="text-right">$' . number_format($pago['importe'], 2) . '</td>';
+                                            echo '<td class="text-right">$' . number_format($pago['saldofin'], 2) . '</td>';
+                                            echo '<td></td>'; // Placeholder for actions if needed
+                                            echo '</tr>';
+                                        }
+                                        echo '</tbody></table></div>';
+                                    } else {
+                                        echo '<div class="alert alert-info">No hay pagos registrados para este folio.</div>';
+                                    }
+                                } else {
+                                    echo '<div class="alert alert-warning">No se ha seleccionado un folio de cobranza.</div>';
+                                }
+                                ?>
+                            </div>
+
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
 
 
 </div>
