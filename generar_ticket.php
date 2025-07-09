@@ -51,7 +51,9 @@ $hora_cita = substr($pago['hora_cita'], 0, 5);
 $nombre_cliente = $personalizado ? mb_strtoupper($pago['paciente'], 'UTF-8') : 'PÚBLICO EN GENERAL';
 
 // Cargar logo en base64 (opcional)
-$logoPath = __DIR__ . '/img/logoempresa.png';
+$logoPath = __DIR__ . '/img/logoempresamn.png';
+
+
 $logoBase64 = file_exists($logoPath) ? base64_encode(file_get_contents($logoPath)) : '';
 
 // Estilos para ticket 80mm
@@ -159,7 +161,9 @@ $mpdf = new Mpdf([
     'margin_bottom' => 5,
     'margin_header' => 0,
     'margin_footer' => 0,
-    'default_font_size' => 10
+    'default_font_size' => 10,
+    'dpi' => 100,
+
 ]);
 
 $mpdf->SetTitle("TICKET PAGO {$pago['id_pago']}");
