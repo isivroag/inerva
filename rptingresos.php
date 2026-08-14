@@ -41,46 +41,55 @@ foreach ($ingresos as $m) {
 }
 ?>
 <style>
-@media print {
-  /* Ocultar botones, formularios, navbar, sidebar, footer */
-  #btnImprimir, #btnDescargar, #exportExcel, form, .main-header, .main-sidebar, footer {
-    display: none !important;
-  }
+    @media print {
 
-  /* Ajustar ancho y quitar sombras para impresión */
-  .content-wrapper, .card {
-    width: 100% !important;
-    box-shadow: none !important;
-  }
+        /* Ocultar botones, formularios, navbar, sidebar, footer */
+        #btnImprimir,
+        #btnDescargar,
+        #exportExcel,
+        form,
+        .main-header,
+        .main-sidebar,
+        footer {
+            display: none !important;
+        }
 
-  /* Tablas limpias y sin cortes */
-  table {
-    border-collapse: collapse !important;
-    width: 100% !important;
-    page-break-inside: avoid;
-  }
+        /* Ajustar ancho y quitar sombras para impresión */
+        .content-wrapper,
+        .card {
+            width: 100% !important;
+            box-shadow: none !important;
+        }
 
-  th, td {
-    border: 1px solid black !important;
-    padding: 6px !important;
-    font-size: 12pt !important;
-  }
+        /* Tablas limpias y sin cortes */
+        table {
+            border-collapse: collapse !important;
+            width: 100% !important;
+            page-break-inside: avoid;
+        }
 
-  th {
-    font-weight: bold !important;
-    text-align: center !important;
-    background-color: #d4efdf !important;
-  }
+        th,
+        td {
+            border: 1px solid black !important;
+            padding: 6px !important;
+            font-size: 12pt !important;
+        }
 
-  tr {
-    page-break-inside: avoid !important;
-  }
+        th {
+            font-weight: bold !important;
+            text-align: center !important;
+            background-color: #d4efdf !important;
+        }
 
-  /* Márgenes personalizados para la hoja */
-  @page {
-    margin: 20mm 15mm 20mm 15mm;
-  }
-}
+        tr {
+            page-break-inside: avoid !important;
+        }
+
+        /* Márgenes personalizados para la hoja */
+        @page {
+            margin: 20mm 15mm 20mm 15mm;
+        }
+    }
 </style>
 
 <link rel="stylesheet" href="plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
@@ -119,8 +128,10 @@ foreach ($ingresos as $m) {
 
                     <div class="col-auto">
                         <button id="btnImprimir" class="btn bg-green" onclick="window.open('rptingresos_print.php?fecha_inicio=<?php echo $fecha_inicio; ?>&fecha_fin=<?php echo $fecha_fin; ?>', '_blank')"><i class="fas fa-print"></i> Imprimir</button>
+                        <button id="btnTicket" class="btn bg-green" onclick="window.location.href='generar_ticket_ingresos.php?fecha_inicio=<?php echo $fecha_inicio; ?>&fecha_fin=<?php echo $fecha_fin; ?>'">
+                            <i class="fas fa-receipt"></i> Ticket
+                        </button>
 
-                        
                         <button id="btnPDF" class="btn bg-green" onclick="window.location.href='generar_pdf_ingresos.php?fecha_inicio=<?php echo $fecha_inicio; ?>&fecha_fin=<?php echo $fecha_fin; ?>'">
                             <i class="fas fa-file-pdf"></i> Descargar PDF
                         </button>

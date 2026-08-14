@@ -95,10 +95,10 @@
           <!-- CIERRA MENU CATALOGOS -->
 
           <?php if ($_SESSION['s_rol'] == '1' || $_SESSION['s_rol'] == '2' || $_SESSION['s_rol'] == '3') { ?>
-            <li class="nav-item  has-treeview <?php echo ($pagina == 'calendario' || $pagina == 'buscador' || $pagina == 'confirmacion' ||
-                                                $pagina === 'cobranza' || $pagina == "vcalendario" || $pagina == "cntacxc") ? "menu-open" : ""; ?>">
-              <a href="#" class="nav-link  <?php echo ($pagina == 'calendario' || $pagina == 'buscador' || $pagina == 'confirmacion' ||
-                                              $pagina === 'cobranza' || $pagina == "vcalendario" || $pagina == "cntacxc") ? "active" : ""; ?>">
+            <li class="nav-item  has-treeview <?php echo ($pagina == 'calendario' || $pagina == 'buscador' || $pagina == 'confirmacion' || $pagina == 'rptcaja' ||
+                                                $pagina === 'cobranza' || $pagina == "vcalendario" || $pagina == "cntacxc" || $pagina == "cntagasto" || $pagina == "cntaretiro") ? "menu-open" : ""; ?>">
+              <a href="#" class="nav-link  <?php echo ($pagina == 'calendario' || $pagina == 'buscador' || $pagina == 'confirmacion' || $pagina == 'rptcaja' ||
+                                              $pagina === 'cobranza' || $pagina == "vcalendario" || $pagina == "cntacxc" || $pagina == "cntagasto" || $pagina == "cntaretiro") ? "active" : ""; ?>">
                 <i class="fa-sharp-duotone fa-regular fa-briefcase-blank  nav-icon"></i>
                 <p>
                   OPERACIONES
@@ -138,7 +138,12 @@
                   </a>
                 </li>
 
-
+                <li class="nav-item">
+                  <a href="rptcaja.php" class="nav-link <?php echo ($pagina == 'rptcaja') ? " seleccionado" : ""; ?>  ">
+                    <i class="fa-sharp-duotone fa-regular fa-calendar-days nav-icon"></i>
+                    <p>CAJA</p>
+                  </a>
+                </li>
 
                 <li class="nav-item">
                   <a href="cobranza.php" class="nav-link <?php echo ($pagina == 'cobranza') ? " seleccionado" : ""; ?>  ">
@@ -153,7 +158,21 @@
                     <p>CNTACXC</p>
                   </a>
                 </li>
-        
+
+                <li class="nav-item">
+                  <a href="cntagasto.php" class="nav-link <?php echo ($pagina == 'cntagasto') ? " seleccionado" : ""; ?>  ">
+                    <i class="fa-sharp-duotone fa-regular fa-money-check-dollar nav-icon"></i>
+                    <p>GASTOS</p>
+                  </a>
+                </li>
+
+                <li class="nav-item">
+                  <a href="cntaretiro.php" class="nav-link <?php echo ($pagina == 'cntaretiro') ? " seleccionado" : ""; ?>  ">
+                    <i class="fa-sharp-duotone fa-regular fa-money-bill-transfer nav-icon"></i>
+                    <p>RETIROS</p>
+                  </a>
+                </li>
+
 
               </ul>
 
@@ -180,7 +199,7 @@
                   <p>INGRESOS</p>
                 </a>
               </li>
-             
+
               <li class="nav-item">
                 <a href="rptpacientes.php" class="nav-link <?php echo ($pagina == 'rptpacientes') ? " seleccionado" : ""; ?>  ">
                   <i class="fa-sharp-duotone fa-regular fa-diagram-project nav-icon"></i>
