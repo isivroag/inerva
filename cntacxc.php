@@ -31,8 +31,12 @@ $colaboradores = $conexion->query("SELECT DISTINCT id_col, colaborador FROM vcxc
                                     <input type="text" id="filtro_cliente" name="filtro_cliente" class="form-control" placeholder="Nombre o ID">
                                 </div>
                                 <div class="col-2">
-                                    <label for="filtro_fecha">Fecha CXC:</label>
-                                    <input type="date" id="filtro_fecha" name="filtro_fecha" class="form-control" value="<?php echo date('Y-m-d'); ?>">
+                                    <label for="filtro_fecha_inicio">Fecha Inicio:</label>
+                                    <input type="date" id="filtro_fecha_inicio" name="filtro_fecha_inicio" class="form-control">
+                                </div>
+                                <div class="col-2">
+                                    <label for="filtro_fecha_fin">Fecha Fin:</label>
+                                    <input type="date" id="filtro_fecha_fin" name="filtro_fecha_fin" class="form-control">
                                 </div>
                                 <div class="col-2">
                                     <label for="filtro_colaborador">Colaborador:</label>
@@ -122,6 +126,36 @@ $colaboradores = $conexion->query("SELECT DISTINCT id_col, colaborador FROM vcxc
                         <div class="modal-footer">
                             <button type="submit" class="btn btn-success">Registrar Pago</button>
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
+    <!-- Modal Cancelar Pago -->
+    <section>
+        <div class="modal fade" id="modalCancelarPago" tabindex="-1" role="dialog" aria-labelledby="modalCancelarPagoLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <form id="formCancelarPago">
+                    <div class="modal-content">
+                        <div class="modal-header bg-danger text-white">
+                            <h5 class="modal-title" id="modalCancelarPagoLabel">Cancelar Pago</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <input type="hidden" id="cp_id_pago" name="id_pago">
+                            <input type="hidden" id="cp_folio_cxc" name="folio_cxc">
+                            <input type="hidden" id="cp_importe" name="importe">
+                            <div class="form-group form-group-sm">
+                                <label for="motivo_cancelacion_pago">*Motivo de Cancelación:</label>
+                                <textarea rows="3" class="form-control" id="motivo_cancelacion_pago" name="motivo" placeholder="Describa el motivo" required></textarea>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                            <button type="submit" class="btn btn-danger">Cancelar Pago</button>
                         </div>
                     </div>
                 </form>

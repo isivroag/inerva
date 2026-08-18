@@ -5,7 +5,8 @@ $objeto = new conn();
 $conexion = $objeto->connect();
 
 $cliente = $_POST['cliente'] ?? '';
-$fecha = $_POST['fecha'] ?? '';
+$fecha_inicio = $_POST['fecha_inicio'] ?? '';
+$fecha_fin = $_POST['fecha_fin'] ?? '';
 $colaborador = $_POST['colaborador'] ?? '';
 
 $where = "WHERE  edo_cxc = 1";
@@ -16,9 +17,16 @@ if ($cliente != '') {
     $params[':cliente'] = "%$cliente%";
     $params[':cliente_id'] = $cliente;
 }
-if ($fecha != '') {
-    $where .= " AND DATE(fecha_cob) = :fecha";
-    $params[':fecha'] = $fecha;
+if ($fecha_inicio != '' && $fecha_fin != '') {
+    $where .= " AND DATE(fecha_cob) BETWEEN :fecha_inicio AND :fecha_fin";
+    $params[':fecha_inicio'] = $fecha_inicio;
+    $params[':fecha_fin'] = $fecha_fin;
+} elseif ($fecha_inicio != '') {
+    $where .= " AND DATE(fecha_cob) >= :fecha_inicio";
+    $params[':fecha_inicio'] = $fecha_inicio;
+} elseif ($fecha_fin != '') {
+    $where .= " AND DATE(fecha_cob) <= :fecha_fin";
+    $params[':fecha_fin'] = $fecha_fin;
 }
 if ($colaborador != '') {
     $where .= " AND id_col = :colaborador";

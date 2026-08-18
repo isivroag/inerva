@@ -1,9 +1,19 @@
 $(document).ready(function () {
   var id, opcion, fila;
-  let hoy = new Date().toISOString().slice(0, 10);
-  $("#filtro_fecha").val(hoy);
 
-  $("#filtro_fecha").on("change", function () {
+  // Ajusta el z-index para que los modales abiertos sobre otro modal queden al frente
+  $(document).on("show.bs.modal", ".modal", function () {
+    var zIndex = 1040 + 10 * $(".modal:visible").length;
+    $(this).css("z-index", zIndex);
+    setTimeout(function () {
+      $(".modal-backdrop")
+        .not(".modal-stack")
+        .css("z-index", zIndex - 1)
+        .addClass("modal-stack");
+    }, 0);
+  });
+
+  $("#filtro_fecha_inicio, #filtro_fecha_fin").on("change", function () {
     cargarCXC();
   });
 
@@ -59,7 +69,8 @@ $(document).ready(function () {
   // Buscar y cargar datos
   function cargarCXC() {
     var cliente = $("#filtro_cliente").val();
-    var fecha = $("#filtro_fecha").val();
+    var fecha_inicio = $("#filtro_fecha_inicio").val();
+    var fecha_fin = $("#filtro_fecha_fin").val();
     var colaborador = $("#filtro_colaborador").val();
 
     $.ajax({
@@ -68,7 +79,8 @@ $(document).ready(function () {
       dataType: "json",
       data: {
         cliente: cliente,
-        fecha: fecha,
+        fecha_inicio: fecha_inicio,
+        fecha_fin: fecha_fin,
         colaborador: colaborador,
       },
       success: function (data) {
@@ -253,7 +265,7 @@ $(document).ready(function () {
     });
   });
 
-  // Cancelar pago (debes implementar la lógica backend)
+  // Cancelar pago: abrir modal para capturar el motivo
   $(document).on("click", ".btnCancelarPago", function () {
     fila = $(this).closest("tr");
     var id_pago = fila.find("td:eq(0)").text(); // Obtener el folio
@@ -261,56 +273,62 @@ $(document).ready(function () {
     importe = parseFloat(importe.replace(/[$,]/g, "")); // Convertir a número
     var folio_cxc = id;
 
-    console.log("Folio CXC:", folio_cxc);
-    console.log("Importe Pago:", importe);
-    console.log("ID Pago:", id_pago);
+    $("#cp_id_pago").val(id_pago);
+    $("#cp_folio_cxc").val(folio_cxc);
+    $("#cp_importe").val(importe);
+    $("#motivo_cancelacion_pago").val("");
+    $("#modalCancelarPago").modal("show");
+  });
 
-    Swal.fire({
-      title: "¿Desea cancelar este pago?",
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonText: "Sí, cancelar",
-      cancelButtonText: "No",
-    }).then((result) => {
-      if (result.value) {
-        $.ajax({
-          url: "bd/cancelarpago.php",
-          type: "POST",
-          data: { folio_cxc: folio_cxc, importe: importe, id_pago: id_pago },
-          success: function (resp) {
-            console.log("Respuesta del servidor:", resp);
-            if (resp == 1) {
-              Swal.fire({
-                title: "Pago cancelado",
-                text: "El pago ha sido cancelado correctamente.",
-                icon: "success",
-                timer: 1500,
-                timerProgressBar: true,
-                showConfirmButton: false,
-              });
-              cargarCXC(); // Recargar la tabla de CXC
-            } else {
-              Swal.fire(
-                "Error",
-                resp.mensaje || "No se pudo cancelar el pago",
-                "error"
-              );
-            }
-          },
-          error: function () {
-            Swal.fire(
-              "Error",
-              "Error de comunicación con el servidor",
-              "error"
-            );
-          },
-        });
-      } else if (result.dismiss === Swal.DismissReason.cancel) {
-        // Opción Público General
-        return;
-      }
+  $("#formCancelarPago").submit(function (e) {
+    e.preventDefault();
+
+    var id_pago = $("#cp_id_pago").val();
+    var folio_cxc = $("#cp_folio_cxc").val();
+    var importe = $("#cp_importe").val();
+    var motivo = $.trim($("#motivo_cancelacion_pago").val());
+
+    if (motivo.length === 0) {
+      Swal.fire("Datos incompletos", "Debe capturar el motivo de la cancelación.", "warning");
+      return;
+    }
+
+    $.ajax({
+      url: "bd/cancelarpago.php",
+      type: "POST",
+      data: { folio_cxc: folio_cxc, importe: importe, id_pago: id_pago, motivo: motivo },
+      success: function (resp) {
+        console.log("Respuesta del servidor:", resp);
+        if (resp == 1) {
+          $("#modalCancelarPago").modal("hide");
+          Swal.fire({
+            title: "Pago cancelado",
+            text: "El pago ha sido cancelado correctamente.",
+            icon: "success",
+            timer: 1500,
+            timerProgressBar: true,
+            showConfirmButton: false,
+          });
+          cargarCXC(); // Recargar la tabla de CXC
+          $("#modalVerPagos").modal("hide");
+        } else {
+          Swal.fire(
+            "Error",
+            resp.mensaje || "No se pudo cancelar el pago",
+            "error"
+          );
+        }
+      },
+      error: function () {
+        Swal.fire(
+          "Error",
+          "Error de comunicación con el servidor",
+          "error"
+        );
+      },
     });
   });
+
 
   // Reimprimir pago (debes implementar la lógica backend)
   $(document).on("click", ".btnReimprimir", function () {
